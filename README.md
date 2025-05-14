@@ -1,15 +1,15 @@
 # bash minesweeper
 CLI Minesweeper in Java
 
->[!INFO]
+>[!NOTE]
 > Java 17 o above required!
 
 ```bash
     git clone 
     cd minesweeper/
-    java -cp app/build/classes/java/main org.example.App
+    java -cp app/build/classes/java/main org.sioterino.minesweeper.App
 ```
 
 >[!IMPORTANT]
-> > Heavy inspiration from (this project)[https://github.com/jesse-rr/CLI_Blackjack]
-> 
+> Heavy inspiration from [this project](https://github.com/jesse-rr/CLI_Blackjack) and [this project](https://github.com/Squirrelbear/Minesweeper/)
+
