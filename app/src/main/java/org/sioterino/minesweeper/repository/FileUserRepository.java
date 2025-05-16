@@ -43,15 +43,17 @@ public class FileUserRepository implements UserRepository {
 
             String login = data[0];
             String password = data[1];
+            int wins = data.length > 2 ? Integer.parseInt(data[2]) : 0;
+            int losses = data.length > 3 ? Integer.parseInt(data[3]) : 0;
 
-            users.put(login, new User(login, password));
+            users.put(login, new User(login, password, wins, losses));
         }
     }
 
     private void saveToFile() {
         PrintWriter writer = newPrintWriter();
         for (User user : users.values()) {
-            writer.println(user.getLogin() + ":" + user.getPassword());
+            writer.println(user.getLogin() + ":" + user.getPassword() + ":" + user.getWins() + ":" + user.getLosses());
         }
         writer.close();
     }

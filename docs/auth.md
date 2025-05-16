@@ -3,10 +3,22 @@
 ```mermaid
 classDiagram
     
+    %% entry
+    class App {
+        + Player player
+        + main(String[] args)
+    }
+    
     %% entity models    
     class User {
         - String login
         - String password
+        - int wins
+        - int losses
+    }
+    
+    class Player {
+        + getStats() Map~String, String~
     }
     
     %% interfaces
@@ -83,7 +95,7 @@ classDiagram
         
         + UserService(UserRepository repository, HashAlgorithm hashAlgorithm)
         + register(String login, String password) void
-        + authenticate(String login, String password) void
+        + authenticate(String login, String password) Player
         + editPassword(String login, String newPassword, String oldPassword) void
         + editLoginName(String oldLogin, String newLogin, String password) void
     }
@@ -134,6 +146,8 @@ classDiagram
     UserException <|-- InvalidPasswordException : extends
     UserException <|-- UserAlreadyExistsException : extends
     UserException <|-- UserNotFoundException : extends
+    
+    User <|-- Player
 
     UserRepository --> User : uses
     
@@ -144,6 +158,7 @@ classDiagram
     UserController --> ASCIIMenu : uses
     UserController --> InputHandler : uses
     UserController --> Terminal : uses
+    App --> UserController : uses
 
     UserController --> InvalidInputException : throws
     UserService --> UserException : throws

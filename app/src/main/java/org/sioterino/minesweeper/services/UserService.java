@@ -1,9 +1,9 @@
 package org.sioterino.minesweeper.services;
 
-import org.sioterino.minesweeper.exceptions.InvalidLoginException;
 import org.sioterino.minesweeper.exceptions.InvalidPasswordException;
 import org.sioterino.minesweeper.exceptions.UserAlreadyExistsException;
 import org.sioterino.minesweeper.exceptions.UserNotFoundException;
+import org.sioterino.minesweeper.models.Player;
 import org.sioterino.minesweeper.models.User;
 import org.sioterino.minesweeper.repository.UserRepository;
 import org.sioterino.minesweeper.services.security.HashAlgorithm;
@@ -24,10 +24,10 @@ public class UserService {
         }
 
         String hash = hashAlgorithm.hash(password);
-        repository.save(new User(login, hash));
+        repository.save(new User(login, hash, 0,0));
     }
 
-    public void authenticate(String login, String password) {
+    public Player authenticate(String login, String password) {
         User user = repository.findByLogin(login);
 
         if (user == null) {
@@ -37,18 +37,22 @@ public class UserService {
         if (!hashAlgorithm.compare(password, user.getPassword())) {
             throw new InvalidPasswordException(login);
         }
+
+        return new Player(user);
     }
 
     public void editPassword(String login, String newPassword, String oldPassword) {
         authenticate(login, oldPassword);
+        User user = repository.findByLogin(login);
 
-        repository.editPassword(login, new User(login, newPassword));
+        repository.editPassword(login, new User(login, newPassword, user.getWins(), user.getLosses()));
     }
 
     public void editLoginName(String oldLogin, String newLogin, String password) {
         authenticate(oldLogin, password);
+        User user = repository.findByLogin(oldLogin);
 
-        repository.editLogin(oldLogin, new User(newLogin, password));
+        repository.editLogin(oldLogin, new User(newLogin, password, user.getWins(), user.getLosses()));
     }
 
 

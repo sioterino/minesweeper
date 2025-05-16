@@ -1,5 +1,6 @@
 package org.sioterino.minesweeper.controllers;
 
+import org.sioterino.minesweeper.App;
 import org.sioterino.minesweeper.enums.ASCIIMenu;
 import org.sioterino.minesweeper.enums.ConsoleColor;
 import org.sioterino.minesweeper.repository.FileUserRepository;
@@ -9,6 +10,7 @@ import org.sioterino.minesweeper.utils.InputHandler;
 import org.sioterino.minesweeper.utils.Terminal;
 
 import java.io.Console;
+import java.util.Map;
 import java.util.Scanner;
 
 public class UserController {
@@ -102,6 +104,8 @@ public class UserController {
             String password = getPasswordInput("Password: ");
 
             service.authenticate(username, password);
+
+            App.player = service.authenticate(username, password);
 
             redirect(ASCIIMenu.MAIN);
 
