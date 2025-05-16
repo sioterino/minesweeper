@@ -24,6 +24,8 @@ dependencies {
 
     // This dependency is used by the application.
     implementation(libs.guava)
+
+    implementation("org.mindrot:jbcrypt:0.4")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -37,6 +39,11 @@ application {
     // Define the main class for the application.
     mainClass = "org.sioterino.minesweeper.App"
 }
+
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
+}
+
 
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
