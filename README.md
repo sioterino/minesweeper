@@ -1,13 +1,13 @@
-# bash minesweeper
+# Bash Minesweeper
 CLI Minesweeper in Java
 
 >[!NOTE]
-> Java 17 o above required!
+> Game developed with JDK 21, but minimun required Java version is Java 17.
 
 ### On Linux Terminal
 ```bash
     # clones repository to current diractory
-    git clone 
+    git clone https://github.com/sioterino/minesweeper.git
     
     # changes directory to the projects directory
     cd minesweeper/
@@ -17,23 +17,28 @@ CLI Minesweeper in Java
     
     # runs the cli program
     ./app/build/install/app/bin/app
-
 ```
+
+> [!WARNING]
+> In case access permission is denied by the System while trying to run `./gradlew installDist`, you can allow access with the following command:
+> ```bash
+>     # allows acess to the gradlew file
+>     chmod u+x gradlew
+> ```
 
 ### On Windows Terminal
 ```bash
     # clones repository to current diractory
-    git clone 
+    git clone https://github.com/sioterino/minesweeper.git
     
     # changes directory to the projects directory
     cd minesweeper/
     
     # creates runnable distribution of the app
-    gradlew installDist
+    gradlew.bat installDist
     
     # runs the cli program
     ./app/build/install/app/bin/app.bat
-
 ```
 
 >[!IMPORTANT]
