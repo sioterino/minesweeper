@@ -1,6 +1,6 @@
-package org.sioterino.minesweeper.exceptions;
+package org.sioterino.minesweeper.utils.exceptions;
 
-import org.sioterino.minesweeper.enums.ConsoleColor;
+import org.sioterino.minesweeper.utils.enums.ConsoleColor;
 
 public class UserAlreadyExistsException extends UserException {
     public UserAlreadyExistsException(String login) {

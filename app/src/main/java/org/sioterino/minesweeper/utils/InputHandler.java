@@ -1,7 +1,7 @@
 package org.sioterino.minesweeper.utils;
 
-import org.sioterino.minesweeper.enums.ConsoleColor;
-import org.sioterino.minesweeper.exceptions.InvalidInputException;
+import org.sioterino.minesweeper.utils.enums.ConsoleColor;
+import org.sioterino.minesweeper.utils.exceptions.InvalidInputException;
 
 public class InputHandler {
 

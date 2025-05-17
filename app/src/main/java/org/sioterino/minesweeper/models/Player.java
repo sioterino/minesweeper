@@ -1,29 +1,49 @@
 package org.sioterino.minesweeper.models;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
 
-public class Player extends User {
+public class Player {
+    private final User user;
+
     public Player(User user) {
-        super(user.getLogin(), user.getPassword(), user.getWins(), user.getLosses());
+        this.user = user;
     }
 
-    public Map<String, String> getStats() {
-        Map<String, String> stats = new HashMap<>();
+    public Stats getStats() {
+        return new Stats(user.getWins(), user.getLosses());
+    }
 
-        int gamesPlayed = getWins() + getLosses();
+    public void increaseWins() {
+        user.setWins(user.getWins() + 1);
+    }
 
-        double winRate = gamesPlayed > 0 ? (double) getWins() / gamesPlayed : 0.0;
+    public void increaseLosses() {
+        user.setLosses(user.getLosses() + 1);
+    }
 
-        DecimalFormat df = new DecimalFormat("00.00%");
-        String formattedWinRate = df.format(winRate);
+    public User getUser() {
+        return user;
+    }
 
-        stats.put("games", String.valueOf(gamesPlayed));
-        stats.put("winRate", formattedWinRate);
-        stats.put("wins", String.valueOf(getWins()));
-        stats.put("losses", String.valueOf(getLosses()));
+    public static Player guestPlayer() {
+        String username = "guest_" + System.currentTimeMillis();
+        User guest = new User(username, "", 0, 0);
+        return new Player(guest);
+    }
 
-        return stats;
+    public static class Stats {
+        public final int wins;
+        public final int losses;
+        public final int gamesPlayed;
+        public final String winRate;
+
+        public Stats(int wins, int losses) {
+            this.wins = wins;
+            this.losses = losses;
+            this.gamesPlayed = wins + losses;
+
+            DecimalFormat df = new DecimalFormat("0.00%");
+            this.winRate = df.format(gamesPlayed > 0 ? (double) wins / gamesPlayed : 0.0);
+        }
     }
 }

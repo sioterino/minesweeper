@@ -1,8 +1,9 @@
 package org.sioterino.minesweeper.controllers;
 
 import org.sioterino.minesweeper.App;
-import org.sioterino.minesweeper.enums.ASCIIMenu;
-import org.sioterino.minesweeper.enums.ConsoleColor;
+import org.sioterino.minesweeper.utils.enums.ASCIIMenu;
+import org.sioterino.minesweeper.utils.enums.ConsoleColor;
+import org.sioterino.minesweeper.models.Player;
 import org.sioterino.minesweeper.repository.FileUserRepository;
 import org.sioterino.minesweeper.services.UserService;
 import org.sioterino.minesweeper.services.security.BCryptHashAlgorithm;
@@ -10,7 +11,6 @@ import org.sioterino.minesweeper.utils.InputHandler;
 import org.sioterino.minesweeper.utils.Terminal;
 
 import java.io.Console;
-import java.util.Map;
 import java.util.Scanner;
 
 public class UserController {
@@ -41,7 +41,7 @@ public class UserController {
         char choice = input.toLowerCase().charAt(0);
 
         switch (choice) {
-            case 'x': safeExit(); break;
+            case 'q': safeExit(); break;
             case 'r': userRegister(); break;
             case 'l': userAuthenticate(); break;
             case 'g': playAsGuest(); break;
@@ -115,6 +115,7 @@ public class UserController {
     }
 
     private void playAsGuest() {
+        App.player = Player.guestPlayer();
         redirect(ASCIIMenu.MAIN);
     }
 

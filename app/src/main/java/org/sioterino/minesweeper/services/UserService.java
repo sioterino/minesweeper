@@ -1,8 +1,8 @@
 package org.sioterino.minesweeper.services;
 
-import org.sioterino.minesweeper.exceptions.InvalidPasswordException;
-import org.sioterino.minesweeper.exceptions.UserAlreadyExistsException;
-import org.sioterino.minesweeper.exceptions.UserNotFoundException;
+import org.sioterino.minesweeper.utils.exceptions.InvalidPasswordException;
+import org.sioterino.minesweeper.utils.exceptions.UserAlreadyExistsException;
+import org.sioterino.minesweeper.utils.exceptions.UserNotFoundException;
 import org.sioterino.minesweeper.models.Player;
 import org.sioterino.minesweeper.models.User;
 import org.sioterino.minesweeper.repository.UserRepository;

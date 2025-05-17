@@ -5,6 +5,8 @@ public class User {
     private String login;
     private String password;
 
+    boolean isGuest;
+
     private int wins;
     private int losses;
 
@@ -13,6 +15,7 @@ public class User {
         this.password = password;
         this.wins = wins;
         this.losses = losses;
+        this.isGuest = this.login.startsWith("guest");
     }
 
     public String getLogin() {
@@ -29,6 +32,10 @@ public class User {
 
     public int getLosses() {
         return losses;
+    }
+
+    public boolean isGuest() {
+        return isGuest;
     }
 
     public void setLogin(String login) {

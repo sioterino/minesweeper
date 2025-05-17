@@ -1,4 +1,4 @@
-package org.sioterino.minesweeper.exceptions;
+package org.sioterino.minesweeper.utils.exceptions;
 
 public class InvalidInputException extends RuntimeException {
     public InvalidInputException(String message) {

@@ -1,4 +1,4 @@
-package org.sioterino.minesweeper.enums;
+package org.sioterino.minesweeper.utils.enums;
 
 public enum ConsoleColor {
     BLACK("\u001B[30m", "\u001B[40m"),

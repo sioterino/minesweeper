@@ -1,4 +1,4 @@
-package org.sioterino.minesweeper.enums;
+package org.sioterino.minesweeper.utils.enums;
 
 public enum ASCIIMenu {
 
