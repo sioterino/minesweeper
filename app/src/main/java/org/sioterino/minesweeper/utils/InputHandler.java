@@ -43,4 +43,12 @@ public class InputHandler {
         return input;
     }
 
+    public static String notBlank(String input) {
+        if (input == null || input.isBlank()) {
+            throw new InvalidInputException(ConsoleColor.RED.fg() + "Input cannot be blank or just spaces.\n" + ConsoleColor.RESET);
+        }
+        return input;
+    }
+
+
 }

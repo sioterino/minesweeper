@@ -127,9 +127,9 @@ public enum ASCIIMenu {
                                          ███    █▀  ████████▀  ████████▀   ▀██████▀  ████████▀   ▀█   █▀     ▄████▀
             \n\n\n
                             ■  Name: %s
-                            ■  Games Played: %s
+                            ■  Games Played: %d
                             ■  Win Rate: %s
-                            ■  Loses: %s
+                            ■  Loses: %d
                             
                             ■  [ L ] = Log out.
                             ■  [ U ] = Edit username.
