@@ -1,5 +1,7 @@
 package org.sioterino.minesweeper.controllers;
 
+import org.sioterino.minesweeper.App;
+import org.sioterino.minesweeper.services.UserService;
 import org.sioterino.minesweeper.utils.InputHandler;
 import org.sioterino.minesweeper.utils.enums.ConsoleColor;
 import org.sioterino.minesweeper.utils.exceptions.InvalidInputException;
@@ -24,13 +26,15 @@ public abstract class Controller {
         System.err.println(ConsoleColor.RED.fg() + "\"" + input + "\" is not a valid input.\n" +    ConsoleColor.RESET);
     }
 
-    protected void safeExit(Scanner scanner) {
+    protected void safeExit(Scanner scanner, UserService service) {
         System.out.println(ConsoleColor.YELLOW.fg() + "\nYou're about to exit the game.");
         System.out.print(ConsoleColor.RED.fg() + "Are you sure you want to continue? " + ConsoleColor.BOLD + ConsoleColor.BLUE.fg() + "(yes/no) " + ConsoleColor.RESET + ConsoleColor.GREEN.fg() + "[default = yes]: " + ConsoleColor.RESET);
 
         boolean exit = InputHandler.defaultYes(scanner.nextLine());
 
         if (exit) {
+            if(App.player != null) service.logout(App.player.getUser());
+
             System.out.println("\n\nGoodbye...\n");
             System.exit(0);
         }

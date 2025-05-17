@@ -8,15 +8,13 @@ import org.sioterino.minesweeper.models.Player;
 import org.sioterino.minesweeper.repository.FileUserRepository;
 import org.sioterino.minesweeper.services.UserService;
 import org.sioterino.minesweeper.services.security.BCryptHashAlgorithm;
-import org.sioterino.minesweeper.utils.InputHandler;
 
-import java.io.Console;
 import java.util.Scanner;
 
 public class UserController extends Controller {
 
     private final Scanner scanner;
-    private final UserService service = new UserService(new FileUserRepository(), new BCryptHashAlgorithm());
+    public final UserService service = new UserService(new FileUserRepository(), new BCryptHashAlgorithm());
 
     public UserController(Scanner scanner) {
         this.scanner = scanner;
@@ -28,7 +26,7 @@ public class UserController extends Controller {
         char choice = choiceInput(scanner);
 
         switch (choice) {
-            case 'q': safeExit(scanner); break;
+            case 'q': safeExit(scanner, service); break;
             case 'r': userRegister(); break;
             case 'l': userAuthenticate(); break;
             case 'g': playAsGuest(); break;

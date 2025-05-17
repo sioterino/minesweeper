@@ -21,7 +21,7 @@ public class Terminal {
     }
 
     public static void redirect(ASCIIMenu menu) {
-        Terminal.clearConsole();
+//        Terminal.clearConsole();
         System.out.println(menu);
     }
 

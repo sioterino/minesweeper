@@ -1,8 +1,8 @@
 package org.sioterino.minesweeper.controllers;
 
+import org.sioterino.minesweeper.App;
 import org.sioterino.minesweeper.utils.Terminal;
 import org.sioterino.minesweeper.utils.enums.ASCIIMenu;
-import org.sioterino.minesweeper.utils.enums.ConsoleColor;
 
 import java.util.Scanner;
 
@@ -20,7 +20,7 @@ public class MenuController extends Controller {
         char choice = choiceInput(scanner);
 
         switch (choice) {
-            case 'q': safeExit(scanner); break;
+            case 'q': safeExit(scanner, App.userController.service); break;
             case 's': startGame(); break;
             case 'a': seeAccount(); break;
             case 'h': gameRules(); break;

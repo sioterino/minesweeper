@@ -60,21 +60,22 @@ public class FileUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
+        if (user.isGuest()) return;
+
         users.put(user.getLogin(), user);
         saveToFile();
     }
 
     @Override
     public void editPassword(String login, User user) {
-        User existingUser = users.get(login);
-        existingUser.setPassword(user.getPassword());
+        users.put(login, user);
         saveToFile();
     }
 
     @Override
-    public void editLogin(String login, User user) {
-        User existingUser = users.get(login);
-        existingUser.setLogin(user.getLogin());
+    public void editLogin(String oldLogin, User user) {
+        users.remove(oldLogin);
+        users.put(user.getLogin(), user);
         saveToFile();
     }
 

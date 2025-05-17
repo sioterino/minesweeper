@@ -2,7 +2,6 @@ package org.sioterino.minesweeper.controllers;
 
 import org.sioterino.minesweeper.utils.Terminal;
 import org.sioterino.minesweeper.utils.enums.ASCIIMenu;
-import org.sioterino.minesweeper.utils.enums.ConsoleColor;
 
 import java.util.Scanner;
 
