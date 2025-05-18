@@ -21,11 +21,11 @@ public class MenuController extends Controller {
         char choice = choiceInput(scanner);
 
         switch (choice) {
-            case 'q': safeExit(scanner, App.userController.service); break;
-            case 's': startGame(); break;
-            case 'a': seeAccount(); break;
-            case 'h': gameRules(); break;
-            default: safeWarn(choice); break;
+            case 'q' -> safeExit(scanner, App.userController.service);
+            case 's' -> startGame();
+            case 'a' -> seeAccount();
+            case 'h' -> gameRules();
+            default -> safeWarn(choice);
         }
 
     }

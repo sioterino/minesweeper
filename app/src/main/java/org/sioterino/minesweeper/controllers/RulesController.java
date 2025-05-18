@@ -18,7 +18,6 @@ public class RulesController extends Controller {
         this.page = page;
         this.gamemode = null;
         Terminal.redirect(ASCIIMenu.RULES);
-        System.out.println(page.toString());
     }
 
     public RulesController(Scanner scanner, GameRulesReturnPage page, Difficulty gamemode) {
@@ -37,19 +36,14 @@ public class RulesController extends Controller {
         } else {
             safeWarn(choice);
         }
-
     }
 
-    private void returnToPreviousPage() {
+    public void returnToPreviousPage() {
         switch (page) {
-            case GameRulesReturnPage.MAIN_MENU -> mainMenu(scanner);
-            case GameRulesReturnPage.SETTINGS -> new SettingsController(scanner).start();
-            case GameRulesReturnPage.IN_GAME -> resumeGame();
+            case MAIN_MENU -> mainMenu(scanner);
+            case SETTINGS -> new SettingsController(scanner).start();
+            case IN_GAME ->  new BoardController(scanner, gamemode).start();
         }
-    }
-
-    private void resumeGame() {
-        new BoardController(scanner, gamemode);
     }
 
 }

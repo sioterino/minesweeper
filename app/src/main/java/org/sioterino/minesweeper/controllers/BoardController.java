@@ -1,8 +1,10 @@
 package org.sioterino.minesweeper.controllers;
 
+import org.sioterino.minesweeper.App;
 import org.sioterino.minesweeper.models.Cell;
 import org.sioterino.minesweeper.services.GameService;
 import org.sioterino.minesweeper.utils.InputHandler;
+import org.sioterino.minesweeper.utils.Terminal;
 import org.sioterino.minesweeper.utils.enums.ASCIIMenu;
 import org.sioterino.minesweeper.utils.enums.ConsoleColor;
 import org.sioterino.minesweeper.utils.enums.Difficulty;
@@ -24,27 +26,46 @@ public class BoardController extends Controller {
         this.scanner = scanner;
         this.gamemode = gamemode;
 
+        Terminal.clearConsole();
         printBoard(true);
     }
 
     @Override
     protected void handleUserInput() {
 
-        String choice = getInput();
-        System.out.println(choice);
+        String input = getInput();
 
-        if (choice.contains("hint")) {
+        if (input.contains("hint")) {
             giveHint();
             return;
         }
 
-        switch (choice.charAt(0)) {
-            case 'x': mainMenu(scanner); break;
-            case 'r': restartGame(); break;
-            case 'h': seeRules(); break;
+        char choice = input.charAt(0);
+
+        if (choice == 'x') {
+            mainMenu(scanner);
+            return;
         }
 
+        if (choice == 'q') {
+            safeExit(scanner, App.userController.service);
+            return;
+        }
 
+        if (choice == 'r') {
+            restartGame();
+            return;
+        }
+
+        if (choice == 'h') {
+            seeRules();
+            return;
+        }
+
+        String command = InputHandler.gameInput(input);
+
+
+        
     }
 
     private String getInput() {
@@ -59,11 +80,14 @@ public class BoardController extends Controller {
 
     private void restartGame() {}
 
-    private void giveHint() {}
+    private void giveHint() {
+        System.out.println("super duper hint");
+    }
 
     private void seeRules() {
-        new RulesController(scanner, GameRulesReturnPage.IN_GAME, gamemode);
+        new RulesController(scanner, GameRulesReturnPage.IN_GAME, gamemode).start();
     }
+
 
 
 

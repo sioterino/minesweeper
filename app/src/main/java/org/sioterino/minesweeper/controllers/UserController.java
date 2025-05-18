@@ -26,11 +26,11 @@ public class UserController extends Controller {
         char choice = choiceInput(scanner);
 
         switch (choice) {
-            case 'q': safeExit(scanner, service); break;
-            case 'r': userRegister(); break;
-            case 'l': userAuthenticate(); break;
-            case 'g': playAsGuest(); break;
-            default: safeWarn(choice); break;
+            case 'q' -> safeExit(scanner, service);
+            case 'r' -> userRegister();
+            case 'l' -> userAuthenticate();
+            case 'g' -> playAsGuest();
+            default -> safeWarn(choice);
         }
     }
 

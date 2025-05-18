@@ -22,11 +22,11 @@ public class AccountController extends Controller {
         char choice = choiceInput(scanner);
 
         switch (choice) {
-            case 'x': mainMenu(scanner); break;
-            case 'l': logout(); break;
-            case 'u': editUsername(); break;
-            case 'p': editPassword(); break;
-            default: safeWarn(choice); break;
+            case 'x' -> mainMenu(scanner);
+            case 'l' -> logout();
+            case 'u' -> editUsername();
+            case 'p' -> editPassword();
+            default -> safeWarn(choice);
         }
     }
 

@@ -22,29 +22,29 @@ public class SettingsController extends Controller {
         char choice = choiceInput(scanner);
 
         switch (choice) {
-            case 'x': mainMenu(scanner); break;
-            case 'b': beginner(); break;
-            case 'i': intermediate(); break;
-            case 'e': expert(); break;
-            case 'h': gameRules(); break;
-            default: safeWarn(choice);
+            case 'x' -> mainMenu(scanner);
+            case 'b' -> beginner();
+            case 'i' -> intermediate();
+            case 'e' -> expert();
+            case 'h' -> gameRules();
+            default -> safeWarn(choice);
         }
     }
 
     private void beginner() {
-        new BoardController(scanner, Difficulty.BEGINNER);
+        new BoardController(scanner, Difficulty.BEGINNER).start();
     }
 
     private void intermediate() {
-        new BoardController(scanner, Difficulty.INTERMEDIATE);
+        new BoardController(scanner, Difficulty.INTERMEDIATE).start();
     }
 
     private void expert() {
-        new BoardController(scanner, Difficulty.EXPERT);
+        new BoardController(scanner, Difficulty.EXPERT).start();
     }
 
     private void gameRules() {
-        new RulesController(scanner, GameRulesReturnPage.SETTINGS);
+        new RulesController(scanner, GameRulesReturnPage.SETTINGS).start();
     }
 
 }
