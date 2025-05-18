@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class SettingsController extends Controller {
 
-    private Scanner scanner;
+    private final Scanner scanner;
 
     public SettingsController(Scanner scanner) {
         this.scanner = scanner;
@@ -23,7 +23,7 @@ public class SettingsController extends Controller {
 
         switch (choice) {
             case 'x': mainMenu(scanner); break;
-            case 'b': begginer(); break;
+            case 'b': beginner(); break;
             case 'i': intermediate(); break;
             case 'e': expert(); break;
             case 'h': gameRules(); break;
@@ -31,16 +31,16 @@ public class SettingsController extends Controller {
         }
     }
 
-    private void begginer() {
-        new BoardController(scanner, Difficulty.BEGINNER.getRows(), Difficulty.BEGINNER.getCols(), Difficulty.BEGINNER.getMines());
+    private void beginner() {
+        new BoardController(scanner, Difficulty.BEGINNER);
     }
 
     private void intermediate() {
-        new BoardController(scanner, Difficulty.INTERMEDIATE.getRows(), Difficulty.INTERMEDIATE.getCols(), Difficulty.INTERMEDIATE.getMines());
+        new BoardController(scanner, Difficulty.INTERMEDIATE);
     }
 
     private void expert() {
-        new BoardController(scanner, Difficulty.EXPERT.getRows(), Difficulty.EXPERT.getCols(), Difficulty.EXPERT.getMines());
+        new BoardController(scanner, Difficulty.EXPERT);
     }
 
     private void gameRules() {

@@ -47,7 +47,14 @@ public class InputHandler {
         if (input == null || input.isBlank()) {
             throw new InvalidInputException(ConsoleColor.RED.fg() + "Input cannot be blank or just spaces.\n" + ConsoleColor.RESET);
         }
-        return input;
+        return input.trim().toLowerCase();
+    }
+
+    public static String gameInput(String input) {
+
+
+
+        return input.trim().toLowerCase();
     }
 
 

@@ -1,8 +1,9 @@
 package org.sioterino.minesweeper.services;
 
 import org.sioterino.minesweeper.models.Board;
-import org.sioterino.minesweeper.models.Board.Position;
+import org.sioterino.minesweeper.models.Board.Point;
 import org.sioterino.minesweeper.models.Cell;
+import org.sioterino.minesweeper.utils.exceptions.game.*;
 
 public class GameService {
 
@@ -36,36 +37,44 @@ public class GameService {
         return false;
     }
 
-    public String reveal(Position p) {
+    public void reveal(Point p) {
 
-        if (!board.isInside(p)) return "";
+        if (!board.isInside(p)) {
+            throw new PointCoordinateOutsideBoardException(p);
+        };
 
         Cell cell = board.getCell(p);
-        if (cell.isRevealed()) return "";
+
+        if (cell.isRevealed()) {
+            throw new CellAlreadyRevealedException(p);
+        };
 
         revealCell(cell);
 
-        if (cell.isMine()) return "";
+        if (cell.isMine()) {
+            throw new BombException(p);
+        }
 
         if (cell.getAdjacentMines() == 0) revealAdjacentCells(p);
 
-        if (checkWin()) return "";
+        if (checkWin()) {
+            throw new VictoryException();
+        };
 
-        return "Cell revealed.";
     }
 
-    public void revealAdjacentCells(Position p) {
+    public void revealAdjacentCells(Point p) {
 
-        for (int i = p.x - 1; i <= p.x + 1; i++) {
-            for (int j = p.y - 1; j <= p.y + 1; j++) {
+        for (int row = p.y - 1; row <= p.y + 1; row++) {
+            for (int col = p.x - 1; col <= p.x + 1; col++) {
 
-                if (board.isInside(new Position(i, j))) {
+                if (board.isInside(row, col)) {
 
-                    Cell neighbor = board.getCell(new Position(i, j));
+                    Cell neighbor = board.getCell(row, col);
 
                     if (!neighbor.isRevealed() && !neighbor.isMine()) {
                         revealCell(neighbor);
-                        if (neighbor.getAdjacentMines() == 0) revealAdjacentCells(new Position(i, j));
+                        if (neighbor.getAdjacentMines() == 0) revealAdjacentCells(new Point(col, row));
                     }
                 }
 
@@ -79,15 +88,29 @@ public class GameService {
         revealedCells++;
     }
 
-    public void toggleFlag(Position p) {
+    public void toggleFlag(Point p) {
         if (board.isInside(p)) {
             Cell cell = board.getCell(p);
-            if (!cell.isRevealed()) cell.toggleFlag();
+            if (!cell.isRevealed()) {
+                cell.toggleFlag();
+            } else {
+                throw new CellAlreadyRevealedException(p);
+            }
+        } else {
+            throw new PointCoordinateOutsideBoardException(p);
         }
     }
 
-    public boolean isGameOver() { return isGameOver; }
-    public boolean isWin() { return isWin; }
-    public Board getBoard() { return board; }
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+
+    public boolean isWin() {
+        return isWin;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
 
 }

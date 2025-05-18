@@ -4,6 +4,7 @@ import org.sioterino.minesweeper.controllers.BoardController;
 import org.sioterino.minesweeper.controllers.UserController;
 import org.sioterino.minesweeper.models.Player;
 import org.sioterino.minesweeper.utils.Terminal;
+import org.sioterino.minesweeper.utils.enums.Difficulty;
 
 import java.util.Scanner;
 
@@ -20,7 +21,8 @@ public class App {
 //        userController.start();
 
         Terminal.clearConsole();
-        new BoardController(scanner, 10, 20, 40).printBoard(true);
+        BoardController bc = new BoardController(scanner, Difficulty.EXPERT);
+        bc.start();
 
         scanner.close();
     }

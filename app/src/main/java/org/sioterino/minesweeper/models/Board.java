@@ -2,6 +2,13 @@ package org.sioterino.minesweeper.models;
 
 public class Board {
 
+    /*
+    *   im quite stupid so I'll just let this be here
+    *
+    *          ROWS = HEIGHT
+    *       COLUMNS = WIDTH
+    */
+
     private final int width;
     private final int height;
     private final int mines;
@@ -9,9 +16,12 @@ public class Board {
     private final Cell[][] grid;
 
     public Board(int rows, int cols, int mines) {
+
         this.height = rows;
         this.width = cols;
+
         this.mines = mines;
+//        this.grid = new Cell[rows][col];
         this.grid = new Cell[height][width];
 
         loadBoard();
@@ -24,9 +34,9 @@ public class Board {
     }
 
     private void createCells() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                grid[i][j] = new Cell();
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                grid[row][col] = new Cell();
             }
         }
     }
@@ -59,27 +69,53 @@ public class Board {
     }
 
     private void countAdjacentMines(Cell cell, int row, int col) {
-        int count = 0;
+        for (int y = row - 1; y <= row + 1; y++) {
+            for (int x = col - 1; x <= col + 1; x++) {
 
-        for (int i = row - 1; i <= row + 1; i++) {
-            for (int j = col - 1; j <= col + 1; j++) {
-                if (isInside(i, j) && !(i == row && j == col)) {
-                    if (grid[i][j].isMine()) {
-                        count++;
-                    }
+                if (isInside(x, y)) {
+                    Cell neighbor = getCell(x, y);
+                    /*
+                    *   rather than using method equals() to compare weather the
+                    *   content of two objects are the same—in this case, they
+                    *   might have the same value inside, but they're still two
+                    *   different cells being places on different coordinates inside
+                    *   the board—we should check if both variables (cell, neighbor)
+                    *   are the same object reference
+                    */
+                    if (cell != neighbor && neighbor.isMine())
+                        cell.increaseAdjacentMines();
                 }
+
             }
         }
-
-        cell.setAdjacentMines(count);
     }
 
-    private boolean isInside(int x, int y) {
-        return x >= 0 && x < height && y >= 0 && y < width;
+    public boolean isInside(int x, int y) {
+
+        boolean isXPositive = x >= 0;
+        boolean isXWithinWidth = x < width;
+        boolean isYPositive = y >= 0;
+        boolean isYWithinWidth = y < height;
+
+        return isXPositive && isXWithinWidth && isYPositive && isYWithinWidth;
     }
 
-    public Cell getCell(Position p) {
+    public boolean isInside(Point p) {
+
+        boolean isXPositive = p.x >= 0;
+        boolean isXWithinWidth = p.x < width;
+        boolean isYPositive = p.y >= 0;
+        boolean isYWithinWidth = p.y < height;
+
+        return isXPositive && isXWithinWidth && isYPositive && isYWithinWidth;
+    }
+
+    public Cell getCell(Point p) {
         return grid[p.x][p.y];
+    }
+
+    public Cell getCell(int x, int y) {
+        return grid[y][x];
     }
 
     public int getWidth() {
@@ -94,17 +130,14 @@ public class Board {
         return mines;
     }
 
-    public Cell[][] getGrid() {
-        return grid;
-    }
-
-    public static class Position {
+    public static class Point {
         public int x;
         public int y;
 
-        public Position(int x, int y) {
+        public Point(int x, int y) {
             this.x = x;
             this.y = y;
         }
     }
+
 }

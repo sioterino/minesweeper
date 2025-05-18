@@ -1,4 +1,4 @@
-package org.sioterino.minesweeper.utils.exceptions;
+package org.sioterino.minesweeper.utils.exceptions.user;
 
 import org.sioterino.minesweeper.utils.enums.ConsoleColor;
 
