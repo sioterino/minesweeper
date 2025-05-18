@@ -4,6 +4,7 @@ import org.sioterino.minesweeper.controllers.BoardController;
 import org.sioterino.minesweeper.controllers.UserController;
 import org.sioterino.minesweeper.models.Player;
 import org.sioterino.minesweeper.utils.Terminal;
+import org.sioterino.minesweeper.utils.enums.ConsoleColor;
 import org.sioterino.minesweeper.utils.enums.Difficulty;
 
 import java.util.Scanner;
@@ -26,5 +27,4 @@ public class App {
 
         scanner.close();
     }
-
 }

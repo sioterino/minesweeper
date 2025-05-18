@@ -1,6 +1,5 @@
 package org.sioterino.minesweeper.utils;
 
-import org.sioterino.minesweeper.utils.enums.ConsoleColor;
 import org.sioterino.minesweeper.utils.exceptions.InvalidInputException;
 
 import java.util.ArrayList;
@@ -17,19 +16,19 @@ public class InputHandler {
     public static String username(String input) {
 
         if (input.contains(" ")) {
-            throw new InvalidInputException(ConsoleColor.RED.fg() + "Usernames can't have spaces to them.\n" + ConsoleColor.RESET);
+            throw new InvalidInputException("Usernames can't have spaces to them.\n");
         }
 
         if (!input.matches("^[a-zA-Z0-9_]+$")) {
-            throw new InvalidInputException(ConsoleColor.RED.fg() + "Usernames can only contain letters, numbers, and underscores.\n" + ConsoleColor.RESET);
+            throw new InvalidInputException("Usernames can only contain letters, numbers, and underscores.\n");
         }
 
         if (input.length() < 4) {
-            throw new InvalidInputException(ConsoleColor.RED.fg() + "Usernames need to be longer than 4 characters.\n" + ConsoleColor.RESET);
+            throw new InvalidInputException("Usernames need to be longer than 4 characters.\n");
         }
 
         if (input.length() > 20) {
-            throw new InvalidInputException(ConsoleColor.RED.fg() + "Usernames can't be longer than 20 characters.\n" + ConsoleColor.RESET);
+            throw new InvalidInputException("Usernames can't be longer than 20 characters.\n");
         }
 
         return input;
@@ -38,11 +37,11 @@ public class InputHandler {
     public static String password(String input) {
 
         if (input.contains(" ")) {
-            throw new InvalidInputException(ConsoleColor.RED.fg() + "Passwords can't have spaces to them.\n" + ConsoleColor.RESET);
+            throw new InvalidInputException("Passwords can't have spaces to them.\n");
         }
 
         if (input.length() < 8) {
-            throw new InvalidInputException(ConsoleColor.RED.fg() + "Passwords need to be longer than 8 characters.\n" + ConsoleColor.RESET);
+            throw new InvalidInputException("Passwords need to be longer than 8 characters.\n");
         }
 
         return input;
@@ -50,7 +49,7 @@ public class InputHandler {
 
     public static String notBlank(String input) {
         if (input == null || input.isBlank()) {
-            throw new InvalidInputException(ConsoleColor.RED.fg() + "Input cannot be blank or just spaces.\n" + ConsoleColor.RESET);
+            throw new InvalidInputException("Input cannot be blank or just spaces.\n");
         }
         return input.trim();
     }

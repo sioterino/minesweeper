@@ -52,14 +52,15 @@ public class Cell {
         StringBuilder color = new StringBuilder(ConsoleColor.BOLD);
 
         switch (adjacentMines) {
-            case 1: color.append(ConsoleColor.BLUE.fg());
-            case 2: color.append(ConsoleColor.GREEN.fg());
-            case 3: color.append(ConsoleColor.RED.fg());
-            case 4: color.append(ConsoleColor.CYAN.fg());
-            case 5: color.append(ConsoleColor.BLUE.fg());
-            case 6: color.append(ConsoleColor.GREEN.fg());
-            case 7: color.append(ConsoleColor.CYAN.fg());
-            case 8: color.append(ConsoleColor.PURPLE.fg());
+            case 1 -> color.append(ConsoleColor.BRIGHT_BLUE.fg());
+            case 2 -> color.append(ConsoleColor.GREEN.fg());
+            case 3 -> color.append(ConsoleColor.BRIGHT_RED.fg());
+            case 4 -> color.append(ConsoleColor.BLUE.fg());
+            case 5 -> color.append(ConsoleColor.PURPLE.fg());
+            case 6 -> color.append(ConsoleColor.CYAN.fg());
+            case 7 -> color.append(ConsoleColor.BRIGHT_PURPLE.fg());
+            case 8 -> color.append(ConsoleColor.WHITE.fg());
+            default -> color.append(ConsoleColor.BRIGHT_BLACK.fg());
         }
 
         return color.toString();
@@ -67,9 +68,10 @@ public class Cell {
 
     public String toString() {
         String flag = ConsoleColor.BOLD + ConsoleColor.YELLOW.fg() + "F" + ConsoleColor.RESET;
+        String hidden = ConsoleColor.BRIGHT_BLACK.fg() + "█" + ConsoleColor.RESET;
 
         if (!isRevealed) {
-            return isFlagged ? flag : "█";
+            return isFlagged ? flag : hidden;
         }
 
         String bomb = ConsoleColor.BOLD + ConsoleColor.RED.fg() + "B" + ConsoleColor.RESET;
@@ -79,7 +81,6 @@ public class Cell {
         }
 
         return getColor() + adjacentMines + ConsoleColor.RESET;
-
     }
 
 }

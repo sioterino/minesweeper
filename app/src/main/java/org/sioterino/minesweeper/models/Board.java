@@ -151,6 +151,11 @@ public class Board {
 
             return new Point(pointX, pointY);
         }
+
+        @Override
+        public String toString() {
+            return String.valueOf(xCoord.charAt(x) + (y + 1));
+        }
     }
 
 }
