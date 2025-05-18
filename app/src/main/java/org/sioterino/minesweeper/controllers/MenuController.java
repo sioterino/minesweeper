@@ -3,6 +3,7 @@ package org.sioterino.minesweeper.controllers;
 import org.sioterino.minesweeper.App;
 import org.sioterino.minesweeper.utils.Terminal;
 import org.sioterino.minesweeper.utils.enums.ASCIIMenu;
+import org.sioterino.minesweeper.utils.enums.GameRulesReturnPage;
 
 import java.util.Scanner;
 
@@ -30,7 +31,7 @@ public class MenuController extends Controller {
     }
 
     private void startGame() {
-        new GameController(scanner).start();
+        new SettingsController(scanner).start();
     }
 
     private void seeAccount() {
@@ -38,7 +39,7 @@ public class MenuController extends Controller {
     }
 
     private void gameRules() {
-        new RulesController(scanner).start();
+        new RulesController(scanner, GameRulesReturnPage.MAIN_MENU).start();
     }
 
 }
