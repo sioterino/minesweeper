@@ -49,9 +49,15 @@ public class GameService {
             throw new CellAlreadyRevealedException(p);
         };
 
+        if (cell.isFlagged()) {
+            throw new CellIsFlaggedException(p);
+        };
+
         revealCell(cell);
 
         if (cell.isMine()) {
+            isWin = false;
+            isGameOver = true;
             throw new BombException(p);
         }
 
@@ -63,7 +69,7 @@ public class GameService {
 
     }
 
-    public void revealAdjacentCells(Point p) {
+    private void revealAdjacentCells(Point p) {
 
         for (int row = p.y - 1; row <= p.y + 1; row++) {
             for (int col = p.x - 1; col <= p.x + 1; col++) {

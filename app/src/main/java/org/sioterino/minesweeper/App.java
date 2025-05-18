@@ -21,7 +21,7 @@ public class App {
 //        userController.start();
 
         Terminal.clearConsole();
-        BoardController bc = new BoardController(scanner, Difficulty.EXPERT);
+        BoardController bc = new BoardController(scanner, Difficulty.BEGINNER);
         bc.start();
 
         scanner.close();

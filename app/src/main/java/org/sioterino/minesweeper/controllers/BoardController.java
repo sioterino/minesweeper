@@ -1,6 +1,7 @@
 package org.sioterino.minesweeper.controllers;
 
 import org.sioterino.minesweeper.App;
+import org.sioterino.minesweeper.models.Board.Point;
 import org.sioterino.minesweeper.models.Cell;
 import org.sioterino.minesweeper.services.GameService;
 import org.sioterino.minesweeper.utils.InputHandler;
@@ -10,6 +11,8 @@ import org.sioterino.minesweeper.utils.enums.ConsoleColor;
 import org.sioterino.minesweeper.utils.enums.Difficulty;
 import org.sioterino.minesweeper.utils.enums.GameRulesReturnPage;
 import org.sioterino.minesweeper.utils.exceptions.InvalidInputException;
+import org.sioterino.minesweeper.utils.exceptions.game.BombException;
+import org.sioterino.minesweeper.utils.exceptions.game.VictoryException;
 
 import java.util.Scanner;
 
@@ -27,7 +30,7 @@ public class BoardController extends Controller {
         this.gamemode = gamemode;
 
         Terminal.clearConsole();
-        printBoard(true);
+        printBoard(false);
     }
 
     @Override
@@ -40,32 +43,55 @@ public class BoardController extends Controller {
             return;
         }
 
-        char choice = input.charAt(0);
+        if (input.trim().length() == 1) {
+            char choice = input.charAt(0);
 
-        if (choice == 'x') {
-            mainMenu(scanner);
-            return;
+            if (choice == 'x') {
+                mainMenu(scanner);
+                return;
+            }
+
+            if (choice == 'q') {
+                safeExit(scanner, App.userController.service);
+                return;
+            }
+
+            if (choice == 'r') {
+                restartGame();
+                return;
+            }
+
+            if (choice == 'h') {
+                seeRules();
+                return;
+            }
         }
 
-        if (choice == 'q') {
-            safeExit(scanner, App.userController.service);
-            return;
+        try {
+            String[] commands = InputHandler.gameInput(input);
+            Point p = Point.parse(commands[0], commands[1]);
+
+            if (commands.length == 2) {
+                gameService.reveal(p);
+            } else {
+                gameService.toggleFlag(p);
+            }
+
+            Terminal.clearConsole();
+            printBoard(false);
+
+        } catch (VictoryException e) {
+            Terminal.clearConsole();
+            System.out.println(e.getMessage());
+
+        } catch (BombException e) {
+            Terminal.clearConsole();
+            printBoard(true);
+            System.out.println(e.getMessage());
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
-
-        if (choice == 'r') {
-            restartGame();
-            return;
-        }
-
-        if (choice == 'h') {
-            seeRules();
-            return;
-        }
-
-        String command = InputHandler.gameInput(input);
-
-
-        
     }
 
     private String getInput() {
@@ -88,11 +114,7 @@ public class BoardController extends Controller {
         new RulesController(scanner, GameRulesReturnPage.IN_GAME, gamemode).start();
     }
 
-
-
-
-
-    public void printBoard(boolean revealAll) {
+    private void printBoard(boolean revealAll) {
         final int width = gameService.getBoard().getWidth();
         final int height = gameService.getBoard().getHeight();
 
@@ -144,7 +166,15 @@ public class BoardController extends Controller {
         sb.append(" ".repeat(PADDING + 2));
 
         for (int i = 0; i < width; i++) {
-            sb.append((char) ('A' + i));
+            char letter;
+
+            if (i < 26) {
+                letter = (char) ('a' + i);
+            } else {
+                letter = (char) ('A' + (i - 26));
+            }
+
+            sb.append(letter);
             sb.append(" ");
         }
 

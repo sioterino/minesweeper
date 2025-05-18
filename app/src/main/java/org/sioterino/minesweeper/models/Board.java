@@ -1,5 +1,7 @@
 package org.sioterino.minesweeper.models;
 
+import java.util.Arrays;
+
 public class Board {
 
     /*
@@ -111,7 +113,7 @@ public class Board {
     }
 
     public Cell getCell(Point p) {
-        return grid[p.x][p.y];
+        return grid[p.y][p.x];
     }
 
     public Cell getCell(int x, int y) {
@@ -131,12 +133,23 @@ public class Board {
     }
 
     public static class Point {
+
+        private static final String xCoord = "abcdefghijklmnopkrstuvwxyzABCDEFGHIJKLMNOPRSTUVWXLZ";
+
         public int x;
         public int y;
 
         public Point(int x, int y) {
             this.x = x;
             this.y = y;
+        }
+
+        public static Point parse(String x, String y) {
+
+            int pointY = Integer.parseInt(y) - 1;
+            int pointX = xCoord.indexOf(x.charAt(0));
+
+            return new Point(pointX, pointY);
         }
     }
 

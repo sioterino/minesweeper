@@ -45,7 +45,7 @@ public abstract class Controller {
             System.out.print(ConsoleColor.BOLD + "> " + ConsoleColor.RESET);
             String input = scanner.nextLine();
             try {
-                return InputHandler.notBlank(input).trim().toLowerCase().charAt(0);
+                return InputHandler.notBlank(input).toLowerCase().charAt(0);
             } catch (InvalidInputException ignored) {}
         }
     }
