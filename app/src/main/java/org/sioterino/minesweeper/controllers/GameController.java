@@ -150,10 +150,10 @@ public class GameController extends Controller {
         String[] rows = rows(width, height, revealAll);
 
         System.out.println(borderTop(width));
-        System.out.println(emptyLine(width));
+//        System.out.println(emptyLine(width));
         for (String row : rows) {
             System.out.println(row);
-            System.out.println(emptyLine(width));
+//            System.out.println(emptyLine(width));
         }
         System.out.println(borderBottom(width));
         System.out.println(footer(width));

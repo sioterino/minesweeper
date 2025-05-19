@@ -68,7 +68,7 @@ public class Tile {
 
     public String toString() {
         String flag = ConsoleColor.BOLD + ConsoleColor.YELLOW.fg() + "F" + ConsoleColor.RESET;
-        String hidden = ConsoleColor.BRIGHT_BLACK.fg() + "█" + ConsoleColor.RESET;
+        String hidden = ConsoleColor.BRIGHT_BLACK.fg() + "⬤" + ConsoleColor.RESET;
 
         if (!isRevealed) {
             return isFlagged ? flag : hidden;

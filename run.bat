@@ -7,16 +7,31 @@ if not exist gradlew (
     exit /b 1
 )
 
-REM Run the build
-echo Building the project with Gradle...
-call gradlew installDist
-if errorlevel 1 (
-    echo ERROR: Gradle build failed.
-    exit /b 1
+set APP_EXEC=app\build\install\app\bin\app.bat
+
+REM Check first argument for "debug"
+if /i "%~1"=="debug" (
+    echo Debug mode: forcing build...
+    call gradlew installDist
+    if errorlevel 1 (
+        echo ERROR: Gradle build failed.
+        exit /b 1
+    )
+) else (
+    REM If executable does not exist, build
+    if not exist "%APP_EXEC%" (
+        echo Executable not found. Building project...
+        call gradlew installDist
+        if errorlevel 1 (
+            echo ERROR: Gradle build failed.
+            exit /b 1
+        )
+    ) else (
+        echo Executable found. Skipping build.
+    )
 )
 
 REM Run the CLI application
-set APP_EXEC=app\build\install\app\bin\app.bat
 if exist "%APP_EXEC%" (
     echo Running Minesweeper CLI...
     call "%APP_EXEC%"

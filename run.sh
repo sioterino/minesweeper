@@ -20,12 +20,20 @@ if [ ! -x "./gradlew" ]; then
     fi
 fi
 
-# Build the distribution
-echo "Building project with Gradle..."
-./gradlew installDist
-
-# Run the CLI program
 APP_EXEC="./app/build/install/app/bin/app"
+
+if [[ "${1:-}" == "debug" ]]; then
+    echo "Debug mode: forcing build..."
+    ./gradlew installDist
+else
+    if [ ! -x "$APP_EXEC" ]; then
+        echo "Executable not found. Building project..."
+        ./gradlew installDist
+    else
+        echo "Executable found. Skipping build."
+    fi
+fi
+
 if [ -x "$APP_EXEC" ]; then
     echo "Running Minesweeper CLI..."
     "$APP_EXEC"

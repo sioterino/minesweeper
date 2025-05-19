@@ -1,9 +1,9 @@
 package org.sioterino.minesweeper.utils.enums;
 
 public enum Difficulty {
-    BEGINNER(7, 14, 10),
-    INTERMEDIATE(12, 24, 40),
-    EXPERT(17, 34, 99);
+    BEGINNER(9, 9, 10),
+    INTERMEDIATE(16, 16, 40),
+    EXPERT(20, 24, 99);
 
     private final int rows;
     private final int cols;
