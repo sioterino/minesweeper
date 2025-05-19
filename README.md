@@ -2,44 +2,34 @@
 This project is a command-line version of the classic Minesweeper game, built in Java with a focus on clean architecture.
 
 >[!NOTE]
-> Game developed with JDK 21, but minimun required Java version is Java 17.
+> Game developed with Java 21, but minimum required Java version is Java 17.
 
 ### On Linux Terminal
 ```bash
-    # clones repository to current diractory
+    # clones repository to current directory
     git clone https://github.com/sioterino/minesweeper.git
     
-    # changes directory to the projects directory
-    cd minesweeper/
+    # run the bash script
+    ./minesweeper/run.sh
     
-    # creates runnable distribution of the app
-    ./gradlew installDist
-    
-    # runs the cli program
-    ./app/build/install/app/bin/app
 ```
 
-> [!WARNING]
-> In case access permission is denied by the System while trying to run `./gradlew installDist`, you can allow access with the following command:
-> ```bash
->     # allows acess to the gradlew file
->     chmod u+x gradlew
-> ```
+>[!TIP]
+> You can also download the `.zip` file in [this link](https://github.com/sioterino/minesweeper/archive/refs/heads/main.zip).
+> Just down forget to run the corresponding runnable script (`run.sh` or `run.bat`) file inside the exported `minesweeper-main/` directory.
 
 ### On Windows Terminal
 ```bash
-    # clones repository to current diractory
+    # clones repository to current directory
     git clone https://github.com/sioterino/minesweeper.git
     
-    # changes directory to the projects directory
-    cd minesweeper/
+    # run the batch script
+    .\minesweeper\run.bat
     
-    # creates runnable distribution of the app
-    gradlew.bat installDist
-    
-    # runs the cli program
-    ./app/build/install/app/bin/app.bat
 ```
+
+> [!WARNING]
+> Be aware there might be problems related to file permissions.
 
 >[!IMPORTANT]
 > Heavy inspiration from [this project](https://github.com/jesse-rr/CLI_Blackjack) and [this project](https://github.com/Squirrelbear/Minesweeper/)
