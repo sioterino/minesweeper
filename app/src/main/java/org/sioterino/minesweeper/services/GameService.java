@@ -2,7 +2,7 @@ package org.sioterino.minesweeper.services;
 
 import org.sioterino.minesweeper.models.Board;
 import org.sioterino.minesweeper.models.Board.Point;
-import org.sioterino.minesweeper.models.Cell;
+import org.sioterino.minesweeper.models.Tile;
 import org.sioterino.minesweeper.utils.exceptions.game.*;
 
 public class GameService {
@@ -12,7 +12,9 @@ public class GameService {
     private boolean isGameOver;
     private boolean isWin;
 
-    private int revealedCells;
+    private int revealedTiles;
+    private int correctlyFlaggedTiles;
+    private int flaggedTiles;
 
     public GameService(int rows, int cols, int mines) {
         this.board = new Board(rows, cols, mines);
@@ -20,14 +22,16 @@ public class GameService {
         this.isGameOver = false;
         this.isWin = false;
 
-        this.revealedCells = 0;
+        this.revealedTiles = 0;
+        this.correctlyFlaggedTiles = 0;
+        this.flaggedTiles = 0;
     }
 
     private boolean checkWin() {
         int boardSize = board.getHeight() * board.getWidth();
         int mines = board.getMines();
 
-        if (revealedCells == boardSize - mines) {
+        if (revealedTiles == boardSize - mines || mines == correctlyFlaggedTiles) {
             isWin = true;
             isGameOver = true;
 
@@ -43,25 +47,25 @@ public class GameService {
             throw new PointCoordinateOutsideBoardException(p);
         };
 
-        Cell cell = board.getCell(p);
+        Tile tile = board.getTile(p);
 
-        if (cell.isRevealed()) {
-            throw new CellAlreadyRevealedException(p);
+        if (tile.isRevealed()) {
+            throw new TileAlreadyRevealedException(p);
         };
 
-        if (cell.isFlagged()) {
-            throw new CellIsFlaggedException(p);
+        if (tile.isFlagged()) {
+            throw new TileIsFlaggedException(p);
         };
 
-        revealCell(cell);
+        revealTile(tile);
 
-        if (cell.isMine()) {
+        if (tile.isMine()) {
             isWin = false;
             isGameOver = true;
             throw new BombException(p);
         }
 
-        if (cell.getAdjacentMines() == 0) revealAdjacentCells(p);
+        if (tile.getAdjacentMines() == 0) revealAdjacentTiles(p);
 
         if (checkWin()) {
             throw new VictoryException();
@@ -69,18 +73,18 @@ public class GameService {
 
     }
 
-    private void revealAdjacentCells(Point p) {
+    private void revealAdjacentTiles(Point p) {
 
         for (int row = p.y - 1; row <= p.y + 1; row++) {
             for (int col = p.x - 1; col <= p.x + 1; col++) {
 
                 if (board.isInside(row, col)) {
 
-                    Cell neighbor = board.getCell(row, col);
+                    Tile neighbor = board.getTile(row, col);
 
                     if (!neighbor.isRevealed() && !neighbor.isMine()) {
-                        revealCell(neighbor);
-                        if (neighbor.getAdjacentMines() == 0) revealAdjacentCells(new Point(col, row));
+                        revealTile(neighbor);
+                        if (neighbor.getAdjacentMines() == 0) revealAdjacentTiles(new Point(col, row));
                     }
                 }
 
@@ -89,18 +93,33 @@ public class GameService {
 
     }
 
-    private void revealCell(Cell cell) {
-        cell.reveal();
-        revealedCells++;
+    private void revealTile(Tile tile) {
+        tile.reveal();
+        revealedTiles++;
     }
 
     public void toggleFlag(Point p) {
         if (board.isInside(p)) {
-            Cell cell = board.getCell(p);
-            if (!cell.isRevealed()) {
-                cell.toggleFlag();
+            Tile tile = board.getTile(p);
+            if (!tile.isRevealed()) {
+
+                if (tile.isMine()) {
+                    if (tile.isFlagged()) {
+                        correctlyFlaggedTiles--;
+                    } else {
+                        correctlyFlaggedTiles++;
+                    }
+                }
+
+                if (tile.isFlagged()) {
+                    flaggedTiles--;
+                } else {
+                    flaggedTiles++;
+                }
+
+                tile.toggleFlag();
             } else {
-                throw new CellAlreadyRevealedException(p);
+                throw new TileAlreadyRevealedException(p);
             }
         } else {
             throw new PointCoordinateOutsideBoardException(p);
@@ -117,6 +136,14 @@ public class GameService {
 
     public Board getBoard() {
         return board;
+    }
+
+    public int getRevealedTiles() {
+        return revealedTiles;
+    }
+
+    public int getFlaggedTiles() {
+        return flaggedTiles;
     }
 
 }

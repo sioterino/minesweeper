@@ -13,7 +13,7 @@ public class SettingsController extends Controller {
 
     public SettingsController(Scanner scanner) {
         this.scanner = scanner;
-        Terminal.redirect(ASCIIMenu.GAME_SETTINGS);
+        Terminal.redirect(ASCIIMenu.GAME_SETTINGS, Difficulty.BEGINNER, Difficulty.INTERMEDIATE, Difficulty.EXPERT);
     }
 
 
@@ -32,15 +32,15 @@ public class SettingsController extends Controller {
     }
 
     private void beginner() {
-        new BoardController(scanner, Difficulty.BEGINNER).start();
+        new GameController(scanner, Difficulty.BEGINNER).start();
     }
 
     private void intermediate() {
-        new BoardController(scanner, Difficulty.INTERMEDIATE).start();
+        new GameController(scanner, Difficulty.INTERMEDIATE).start();
     }
 
     private void expert() {
-        new BoardController(scanner, Difficulty.EXPERT).start();
+        new GameController(scanner, Difficulty.EXPERT).start();
     }
 
     private void gameRules() {

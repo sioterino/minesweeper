@@ -2,14 +2,14 @@ package org.sioterino.minesweeper.models;
 
 import org.sioterino.minesweeper.utils.enums.ConsoleColor;
 
-public class Cell {
+public class Tile {
 
     private boolean isMine;
     private boolean isRevealed;
     private boolean isFlagged;
     private int adjacentMines;
 
-    public Cell() {
+    public Tile() {
         isMine = false;
         isRevealed = false;
         isFlagged = false;

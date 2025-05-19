@@ -2,6 +2,7 @@ package org.sioterino.minesweeper.utils;
 
 import org.sioterino.minesweeper.models.Player;
 import org.sioterino.minesweeper.utils.enums.ASCIIMenu;
+import org.sioterino.minesweeper.utils.enums.Difficulty;
 
 public class Terminal {
 
@@ -28,6 +29,11 @@ public class Terminal {
     public static void redirect(ASCIIMenu menu, Player player) {
         Terminal.clearConsole();
         System.out.printf(menu.toString(), player.getUser().getLogin(), player.getStats().gamesPlayed, player.getStats().winRate, player.getStats().losses);
+    }
+
+    public static void redirect(ASCIIMenu menu, Difficulty b, Difficulty i, Difficulty e) {
+        Terminal.clearConsole();
+        System.out.printf(menu.toString(), b.getMines(), i.getMines(), e.getMines());
     }
 
 }

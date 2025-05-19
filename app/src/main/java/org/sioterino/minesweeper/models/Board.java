@@ -1,7 +1,5 @@
 package org.sioterino.minesweeper.models;
 
-import java.util.Arrays;
-
 public class Board {
 
     /*
@@ -15,7 +13,7 @@ public class Board {
     private final int height;
     private final int mines;
 
-    private final Cell[][] grid;
+    private final Tile[][] grid;
 
     public Board(int rows, int cols, int mines) {
 
@@ -23,22 +21,22 @@ public class Board {
         this.width = cols;
 
         this.mines = mines;
-//        this.grid = new Cell[rows][col];
-        this.grid = new Cell[height][width];
+//        this.grid = new Tile[rows][col];
+        this.grid = new Tile[height][width];
 
         loadBoard();
     }
 
     private void loadBoard() {
-        createCells();
+        createTiles();
         placeMines();
         setAdjacentMines();
     }
 
-    private void createCells() {
+    private void createTiles() {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                grid[row][col] = new Cell();
+                grid[row][col] = new Tile();
             }
         }
     }
@@ -50,10 +48,10 @@ public class Board {
             int row = (int) (Math.random() * height);
             int col = (int) (Math.random() * width);
 
-            Cell cell = grid[row][col];
+            Tile tile = grid[row][col];
 
-            if (!cell.isMine()) {
-                cell.setMine(true);
+            if (!tile.isMine()) {
+                tile.setMine(true);
                 placedMines++;
             }
         }
@@ -62,30 +60,30 @@ public class Board {
     private void setAdjacentMines() {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                Cell cell = grid[row][col];
-                if (!cell.isMine()) {
-                    countAdjacentMines(cell, row, col);
+                Tile tile = grid[row][col];
+                if (!tile.isMine()) {
+                    countAdjacentMines(tile, row, col);
                 }
             }
         }
     }
 
-    private void countAdjacentMines(Cell cell, int row, int col) {
+    private void countAdjacentMines(Tile tile, int row, int col) {
         for (int y = row - 1; y <= row + 1; y++) {
             for (int x = col - 1; x <= col + 1; x++) {
 
                 if (isInside(x, y)) {
-                    Cell neighbor = getCell(x, y);
+                    Tile neighbor = getTile(x, y);
                     /*
                     *   rather than using method equals() to compare weather the
                     *   content of two objects are the same—in this case, they
                     *   might have the same value inside, but they're still two
-                    *   different cells being places on different coordinates inside
-                    *   the board—we should check if both variables (cell, neighbor)
+                    *   different tiles being places on different coordinates inside
+                    *   the board—we should check if both variables (tile, neighbor)
                     *   are the same object reference
                     */
-                    if (cell != neighbor && neighbor.isMine())
-                        cell.increaseAdjacentMines();
+                    if (tile != neighbor && neighbor.isMine())
+                        tile.increaseAdjacentMines();
                 }
 
             }
@@ -112,11 +110,11 @@ public class Board {
         return isXPositive && isXWithinWidth && isYPositive && isYWithinWidth;
     }
 
-    public Cell getCell(Point p) {
+    public Tile getTile(Point p) {
         return grid[p.y][p.x];
     }
 
-    public Cell getCell(int x, int y) {
+    public Tile getTile(int x, int y) {
         return grid[y][x];
     }
 
@@ -154,7 +152,7 @@ public class Board {
 
         @Override
         public String toString() {
-            return String.valueOf(xCoord.charAt(x) + (y + 1));
+            return String.format("%c%d", xCoord.charAt(x), y + 1);
         }
     }
 

@@ -19,18 +19,17 @@ public enum ASCIIMenu {
             \n
                                         The goal of Minesweeper is to clear a rectangular grid of hidden mines without
                                       detonating any of them. Each square in the grid either contains a mine or a number
-                                                    indicating how many mines are adjacent to that square.
+                                                    indicating how many mines are adjacent to that tile.
             \n
                                               ┌──────────────────────────────────────────────────────────────────┐
                                               │                     [ Minesweeper  Commands ]                    │
                      ┌────────────────────┐   ├──────────────────────────────────────────────────────────────────┤
                      │  [ Key Commands ]  │   │                                                                  │
-                     └────────────────────┘   │    ■ [ (x, y) ] : Uncovers a square.                             │
-                                              │    ■ [ (x, y) flag ] : Flags a square as a mine.                 │
-                                              │    ■ [ (x, y) unflag ] : Unflags a square previously flagged.    │
+                     └────────────────────┘   │    ■ [ (x, y) ] : Uncovers a tile.                               │
+                                              │    ■ [ (x, y) flag ] : toggles a flag on a tile.                 │
                                               │    ■ [ X ] : Quits the game.                                     │
                                               │    ■ [ R ] : Restarts the game.                                  │
-                                              │    ■ [ hint ] : Reveals a square in the game (1 per game).       │
+                                              │    ■ [ hint ] : Reveals a tile in the game (1 per game).         │
                                               │                                                                  │
                                               └──────────────────────────────────────────────────────────────────┘
             \n
@@ -38,7 +37,7 @@ public enum ASCIIMenu {
                                               │                     [ Minesweeper  Commands ]                    │
                      ┌────────────────────┐   ├──────────────────────────────────────────────────────────────────┤
                      │   [ Objective ]    │   │                                                                  │
-                     └────────────────────┘   │    ■  Clear all non-mine squares on the board without            │
+                     └────────────────────┘   │    ■  Clear all non-mine tiles on the board without              │
                                               │       triggering a mine.                                         │
                                               │                                                                  │
                      ┌────────────────────┐   ├──────────────────────────────────────────────────────────────────┤
@@ -50,11 +49,11 @@ public enum ASCIIMenu {
                      ┌────────────────────┐   ├──────────────────────────────────────────────────────────────────┤
                      │[ Numbered Squares ]│   │                                                                  │
                      └────────────────────┘   │    ■  Each number (1–8) indicates how many mines are adjacent    │
-                                              │       to that square (in the 8 surrounding tiles).               │
+                                              │       to that tile (in the 8 surrounding tiles).                 │
                                               │                                                                  │
                      ┌────────────────────┐   ├──────────────────────────────────────────────────────────────────┤
                      │    [ Winning ]     │   │                                                                  │
-                     └────────────────────┘   │    ■  You win when all non-mine squares are revealed.            │
+                     └────────────────────┘   │    ■  You win when all non-mine tiles are revealed.              │
                                               │    ■  Flagging all mines is not necessary to win, but it helps   │
                                               │       in tracking them.                                          │
                                               │                                                                  │
@@ -142,7 +141,7 @@ public enum ASCIIMenu {
             """),
 
     CREATE_NEW_ACCOUNT("""
-            \n
+            \n\n\n
             ╟►──────────────────────────────────────◄═══════════════════[[████████]]══════════════════►──────────────────────────────────────────◄╣
             \n
                                                                           Register
@@ -150,7 +149,7 @@ public enum ASCIIMenu {
             """),
 
     AUTHENTICATE_ACCOUNT("""
-            \n
+            \n\n\n
             ╟►──────────────────────────────────────◄═══════════════════[[████████]]══════════════════►──────────────────────────────────────────◄╣
             \n
                                                                         Authenticate
@@ -158,7 +157,7 @@ public enum ASCIIMenu {
             """),
 
     EDIT_USERNAME("""
-            \n
+            \n\n\n
             ╟►──────────────────────────────────────◄═══════════════════[[████████]]══════════════════►──────────────────────────────────────────◄╣
             \n
                                                                        Edit  Username
@@ -166,7 +165,7 @@ public enum ASCIIMenu {
             """),
 
     EDIT_PASSWORD("""
-            \n
+            \n\n\n
             ╟►──────────────────────────────────────◄═══════════════════[[████████]]══════════════════►──────────────────────────────────────────◄╣
             \n
                                                                        Edit  Password
@@ -197,23 +196,83 @@ public enum ASCIIMenu {
             \n
             """),
 
-    BOARD ("""
+    MINESWEEPER("""
+            \n
             ╟►──────────────────────────────────────◄═══════════════════[[████████]]══════════════════►──────────────────────────────────────────◄╣
             \n
                                                                          Minesweeper
             \n
             """),
 
+    YOU_WON("""
+            \n
+            ╟►──────────────────────────────────────◄═══════════════════[[████████]]══════════════════►──────────────────────────────────────────◄╣
+            \n
+                                            ▄██   ▄    ▄██████▄  ███    █▄        ▄█     █▄   ▄██████▄  ███▄▄▄▄
+                                            ███   ██▄ ███    ███ ███    ███      ███     ███ ███    ███ ███▀▀▀██▄
+                                            ███▄▄▄███ ███    ███ ███    ███      ███     ███ ███    ███ ███   ███
+                                            ▀▀▀▀▀▀███ ███    ███ ███    ███      ███     ███ ███    ███ ███   ███
+                                            ▄██   ███ ███    ███ ███    ███      ███     ███ ███    ███ ███   ███
+                                            ███   ███ ███    ███ ███    ███      ███     ███ ███    ███ ███   ███
+                                            ███   ███ ███    ███ ███    ███      ███ ▄█▄ ███ ███    ███ ███   ███
+                                             ▀█████▀   ▀██████▀  ████████▀        ▀███▀███▀   ▀██████▀   ▀█   █▀
+            \n\n\n
+            """),
+
+    YOU_LOST("""
+            \n
+            ╟►──────────────────────────────────────◄═══════════════════[[████████]]══════════════════►──────────────────────────────────────────◄╣
+            \n
+                                       ▄██   ▄    ▄██████▄  ███    █▄        ▄█        ▄██████▄     ▄████████     ███
+                                       ███   ██▄ ███    ███ ███    ███      ███       ███    ███   ███    ███ ▀█████████▄
+                                       ███▄▄▄███ ███    ███ ███    ███      ███       ███    ███   ███    █▀     ▀███▀▀██
+                                       ▀▀▀▀▀▀███ ███    ███ ███    ███      ███       ███    ███   ███            ███   ▀
+                                       ▄██   ███ ███    ███ ███    ███      ███       ███    ███ ▀███████████     ███
+                                       ███   ███ ███    ███ ███    ███      ███       ███    ███          ███     ███
+                                       ███   ███ ███    ███ ███    ███      ███▌    ▄ ███    ███    ▄█    ███     ███
+                                        ▀█████▀   ▀██████▀  ████████▀        ████▄▄██  ▀██████▀   ▄████████▀     ▄████▀
+            \n\n\n
+            """),
+
     INSTRUCTIONS ("""
             \n
             ╟►──────────────────────────────────────◄═══════════════════[[████████]]══════════════════►──────────────────────────────────────────◄╣
             \n
-            ■ [ (x, y) ] : Uncovers a square.
-            ■ [ (x, y) flag ] : Flags a square as a mine.
-            ■ [ (x, y) unflag ] : Unflags a square previously flagged.
-            ■ [ X ] : Quits the game.
+            ■ [ (x, y) ] : Uncovers a tile.
+            ■ [ (x, y) flag ] : toggles a flag on a tile.
+            ■ [ hint ] : Reveals a tile in the game (1 per game).
+            \n
             ■ [ R ] : Restarts the game.
-            ■ [ hint ] : Reveals a square in the game (1 per game).
+            ■ [ X ] : Quits the game.
+            ■ [ Q ] : closes the program.
+            \n
+            """),
+
+    EXPLODED_BOMB_SETTINGS ("""
+            \n
+                                                                   Exploded bomb : [ %s ]
+            \n
+            ╟►──────────────────────────────────────◄═══════════════════[[████████]]══════════════════►──────────────────────────────────────────◄╣
+            \n
+            ■ [ R ] : Restarts the game.
+            ■ [ X ] : Quits the game.
+            ■ [ Q ] : closes the program.
+            \n
+            """),
+
+    YOU_WON_SETTINGS ("""
+            \n
+            ╟►──────────────────────────────────────◄═══════════════════[[████████]]══════════════════►──────────────────────────────────────────◄╣
+            \n
+            ■ [ R ] : Restarts the game.
+            ■ [ X ] : Quits the game.
+            ■ [ Q ] : closes the program.
+            \n
+            """),
+
+    BOTTOM ("""
+            \n
+            ╟►──────────────────────────────────────◄═══════════════════[[████████]]══════════════════►──────────────────────────────────────────◄╣
             \n
             """);
 

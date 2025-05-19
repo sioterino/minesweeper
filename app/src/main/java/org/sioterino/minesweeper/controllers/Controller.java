@@ -51,12 +51,12 @@ public abstract class Controller {
     }
 
     protected String getLoginInput(Scanner scanner, String message) {
-        System.out.print(ConsoleColor.BRIGHT_YELLOW + message + ConsoleColor.RESET);
+        System.out.print(ConsoleColor.BRIGHT_YELLOW.fg() + message + ConsoleColor.RESET);
         return InputHandler.username(scanner.nextLine());
     }
 
     protected String getPasswordInput(Scanner scanner, String message) {
-        System.out.print(ConsoleColor.BRIGHT_YELLOW + message + ConsoleColor.RESET);
+        System.out.print(ConsoleColor.BRIGHT_YELLOW.fg() + message + ConsoleColor.RESET);
 
         Console console = System.console();
 

@@ -2,7 +2,7 @@ package org.sioterino.minesweeper.controllers;
 
 import org.sioterino.minesweeper.App;
 import org.sioterino.minesweeper.models.Board.Point;
-import org.sioterino.minesweeper.models.Cell;
+import org.sioterino.minesweeper.models.Tile;
 import org.sioterino.minesweeper.services.GameService;
 import org.sioterino.minesweeper.utils.InputHandler;
 import org.sioterino.minesweeper.utils.Terminal;
@@ -15,22 +15,25 @@ import org.sioterino.minesweeper.utils.exceptions.game.BombException;
 import org.sioterino.minesweeper.utils.exceptions.game.VictoryException;
 
 import java.util.Scanner;
+import java.util.Stack;
 
-public class BoardController extends Controller {
+public class GameController extends Controller {
 
     private int PADDING;
     private final Difficulty gamemode;
 
+    private final Stack<Point> history;
+
     private final GameService gameService;
     private final Scanner scanner;
 
-    public BoardController(Scanner scanner, Difficulty gamemode) {
+    public GameController(Scanner scanner, Difficulty gamemode) {
         this.gameService = new GameService(gamemode.getRows(), gamemode.getCols(), gamemode.getMines());
         this.scanner = scanner;
         this.gamemode = gamemode;
+        this.history = new Stack<>();
 
-        Terminal.clearConsole();
-        printBoard(false);
+        printInGame();
     }
 
     @Override
@@ -70,6 +73,7 @@ public class BoardController extends Controller {
         try {
             String[] commands = InputHandler.gameInput(input);
             Point p = Point.parse(commands[0], commands[1]);
+            history.push(p);
 
             if (commands.length == 2) {
                 gameService.reveal(p);
@@ -77,17 +81,13 @@ public class BoardController extends Controller {
                 gameService.toggleFlag(p);
             }
 
-            Terminal.clearConsole();
-            printBoard(false);
+            printInGame();
 
-        } catch (VictoryException e) {
-            Terminal.clearConsole();
-            System.out.println(e.getMessage());
+        } catch (VictoryException ignored) {
+            printYouWon();
 
-        } catch (BombException e) {
-            Terminal.clearConsole();
-            printBoard(true);
-            System.out.println(e.getMessage());
+        } catch (BombException ignored) {
+            printYouLost();
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -122,7 +122,6 @@ public class BoardController extends Controller {
 
         String[] rows = rows(width, height, revealAll);
 
-        System.out.println(ASCIIMenu.BOARD);
         System.out.println(borderTop(width));
         System.out.println(emptyLine(width));
         for (String row : rows) {
@@ -132,8 +131,29 @@ public class BoardController extends Controller {
         System.out.println(borderBottom(width));
         System.out.println(footer(width));
         System.out.println("\n\n\n");
-        System.out.println(ASCIIMenu.INSTRUCTIONS);
 
+    }
+
+    private void printYouWon() {
+        Terminal.clearConsole();
+        System.out.println(ASCIIMenu.YOU_WON);
+        printBoard(true);
+        System.out.println(ASCIIMenu.YOU_WON_SETTINGS);
+    }
+
+    private void printYouLost() {
+        Terminal.clearConsole();
+        System.out.println(ASCIIMenu.YOU_LOST);
+        printBoard(true);
+        System.out.printf(ASCIIMenu.EXPLODED_BOMB_SETTINGS.toString(), history.peek().toString());
+    }
+
+    private void printInGame() {
+        Terminal.clearConsole();
+        System.out.println(ASCIIMenu.MINESWEEPER);
+        printBoard(false);
+        System.out.println(gameStats());
+        System.out.println(ASCIIMenu.INSTRUCTIONS);
     }
 
     private String borderTop(int width) {
@@ -181,6 +201,20 @@ public class BoardController extends Controller {
         return sb.toString();
     }
 
+    private String gameStats() {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Tiles : [ ").append(gameService.getBoard().getWidth() * gameService.getBoard().getHeight()).append(" ]       ");
+        sb.append("Revealed : [ ").append(gameService.getRevealedTiles()).append(" ]       ");
+        sb.append("Flagged : [ ").append(gameService.getFlaggedTiles()).append(" ]\n");
+
+        int padding = (135 - sb.length()) / 2;
+        padding = Math.max(padding, 0);
+
+        return " ".repeat(padding) + sb;
+
+    }
+
     private String[] rows(int width, int height, boolean revealAll) {
 
         String[] rows = new String[height];
@@ -194,11 +228,11 @@ public class BoardController extends Controller {
 
             for (int col = 0; col < width; col++) {
 
-                Cell cell = gameService.getBoard().getCell(col, row);
+                Tile tile = gameService.getBoard().getTile(col, row);
 
-                if (revealAll && !cell.isRevealed()) cell.reveal();
+                if (revealAll && !tile.isRevealed()) tile.reveal();
 
-                sb.append(cell.toString()).append(" ");
+                sb.append(tile.toString()).append(" ");
 
             }
 

@@ -43,7 +43,6 @@ public class UserService {
     }
 
     public void logout(User user) {
-        System.out.println("login out user: " + user.getLogin());
         repository.save(user);
         App.player = null;
     }
