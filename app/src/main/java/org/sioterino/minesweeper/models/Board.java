@@ -1,5 +1,7 @@
 package org.sioterino.minesweeper.models;
 
+import org.sioterino.minesweeper.utils.enums.Difficulty;
+
 public class Board {
 
     private final int width;
@@ -8,12 +10,12 @@ public class Board {
 
     private final Tile[][] grid;
 
-    public Board(int rows, int cols, int mines) {
+    public Board(Difficulty gamemode) {
 
-        this.height = rows;
-        this.width = cols;
+        this.height = gamemode.getRows();
+        this.width = gamemode.getCols();
 
-        this.mines = mines;
+        this.mines = gamemode.getMines();
         this.grid = new Tile[height][width];
 
         loadBoard();

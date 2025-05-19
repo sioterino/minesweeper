@@ -10,6 +10,7 @@ import org.sioterino.minesweeper.utils.exceptions.InvalidInputException;
 import org.sioterino.minesweeper.utils.exceptions.game.BombException;
 import org.sioterino.minesweeper.utils.exceptions.game.VictoryException;
 
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -20,14 +21,24 @@ public class GameController extends Controller {
 
     private final Stack<Point> history;
 
-    private final GameService gameService;
+    private GameService gameService;
     private final Scanner scanner;
 
+    private final Map<Character, Runnable> commandMap;
+
     public GameController(Scanner scanner, Difficulty gamemode) {
-        this.gameService = new GameService(gamemode.getRows(), gamemode.getCols(), gamemode.getMines());
+        this.gameService = new GameService(gamemode);
         this.scanner = scanner;
         this.gamemode = gamemode;
+
         this.history = new Stack<>();
+
+        commandMap = Map.of(
+                'x', () -> mainMenu(scanner),
+                'q', () -> safeExit(scanner, App.userController.service),
+                'r', this::restartGame,
+                'h', this::seeRules
+        );
 
         printInGame();
     }
@@ -37,35 +48,37 @@ public class GameController extends Controller {
 
         String input = getInput();
 
+        if (giveHint(input)) return;
+        if (commandInput(input)) return;
+
+        gameMoveInput(input);
+    }
+
+    private boolean giveHint(String input) {
         if (input.contains("hint")) {
-            giveHint();
-            return;
+            gameService.hint();
+            printInGame();
+            return true;
         }
+        return false;
+    }
+
+    private boolean commandInput(String input) {
 
         if (input.trim().length() == 1) {
             char choice = input.charAt(0);
 
-            if (choice == 'x') {
-                mainMenu(scanner);
-                return;
+            Runnable action = commandMap.get(choice);
+            if (action != null) {
+                action.run();
+                return true;
             }
 
-            if (choice == 'q') {
-                safeExit(scanner, App.userController.service);
-                return;
-            }
-
-            if (choice == 'r') {
-                restartGame();
-                return;
-            }
-
-            if (choice == 'h') {
-                seeRules();
-                return;
-            }
         }
+        return false;
+    }
 
+    private void gameMoveInput(String input) {
         try {
             String[] commands = InputHandler.gameInput(input);
             Point p = Point.parse(commands[0], commands[1]);
@@ -100,10 +113,9 @@ public class GameController extends Controller {
         }
     }
 
-    private void restartGame() {}
-
-    private void giveHint() {
-        System.out.println("super duper hint");
+    private void restartGame() {
+        gameService = new GameService(gamemode);
+        printInGame();
     }
 
     private void seeRules() {

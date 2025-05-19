@@ -3,6 +3,7 @@ package org.sioterino.minesweeper.services;
 import org.sioterino.minesweeper.models.Board;
 import org.sioterino.minesweeper.models.Board.Point;
 import org.sioterino.minesweeper.models.Tile;
+import org.sioterino.minesweeper.utils.enums.Difficulty;
 import org.sioterino.minesweeper.utils.exceptions.game.*;
 
 public class GameService {
@@ -15,11 +16,14 @@ public class GameService {
     private int revealedTiles;
     private int flaggedTiles;
 
-    public GameService(int rows, int cols, int mines) {
-        this.board = new Board(rows, cols, mines);
+    private boolean canGiveHint;
+
+    public GameService(Difficulty gamemode) {
+        this.board = new Board(gamemode);
 
         this.isGameOver = false;
         this.isWin = false;
+        this.canGiveHint = true;
 
         this.revealedTiles = 0;
         this.flaggedTiles = 0;
@@ -37,6 +41,47 @@ public class GameService {
         }
 
         return false;
+    }
+
+    public void hint() {
+        if (!canGiveHint) throw new HintAlreadyGivenException();
+
+        while (true) {
+
+            int x = (int) (Math.random() * board.getWidth());
+            int y = (int) (Math.random() * board.getHeight());
+
+            Point p = new Point(x, y);
+            Tile tile = board.getTile(p);
+
+            if (!tile.isMine() && !tile.isRevealed() && !tile.isFlagged()) {
+                reveal(p);
+                break;
+            }
+
+        }
+
+        canGiveHint = false;
+    }
+
+    public void toggleFlag(Point p) {
+        if (board.isInside(p)) {
+            Tile tile = board.getTile(p);
+            if (!tile.isRevealed()) {
+
+                if (tile.isFlagged()) {
+                    flaggedTiles--;
+                } else {
+                    flaggedTiles++;
+                }
+                tile.toggleFlag();
+
+            } else {
+                throw new TileAlreadyRevealedException(p);
+            }
+        } else {
+            throw new PointCoordinateOutsideBoardException(p);
+        }
     }
 
     public void reveal(Point p) {
@@ -100,26 +145,6 @@ public class GameService {
     private void revealTile(Tile tile) {
         tile.reveal();
         revealedTiles++;
-    }
-
-    public void toggleFlag(Point p) {
-        if (board.isInside(p)) {
-            Tile tile = board.getTile(p);
-            if (!tile.isRevealed()) {
-
-                if (tile.isFlagged()) {
-                    flaggedTiles--;
-                } else {
-                    flaggedTiles++;
-                }
-                tile.toggleFlag();
-
-            } else {
-                throw new TileAlreadyRevealedException(p);
-            }
-        } else {
-            throw new PointCoordinateOutsideBoardException(p);
-        }
     }
 
     public boolean isGameOver() {
