@@ -10,7 +10,6 @@ public class GameService {
 
     private final Board board;
 
-    private boolean isGameOver;
     private boolean isWin;
 
     private int revealedTiles;
@@ -21,7 +20,6 @@ public class GameService {
     public GameService(Difficulty gamemode) {
         this.board = new Board(gamemode);
 
-        this.isGameOver = false;
         this.isWin = false;
         this.canGiveHint = true;
 
@@ -29,18 +27,13 @@ public class GameService {
         this.flaggedTiles = 0;
     }
 
-    private boolean checkWin() {
+    private void checkWin() {
         int boardSize = board.getHeight() * board.getWidth();
         int mines = board.getMines();
 
         if (revealedTiles == boardSize - mines) {
             isWin = true;
-            isGameOver = true;
-
-            return true;
         }
-
-        return false;
     }
 
     public void hint() {
@@ -102,18 +95,12 @@ public class GameService {
 
         revealTile(tile);
 
-        if (tile.isMine()) {
-            isWin = false;
-            isGameOver = true;
-            throw new BombException(p);
-        }
+        if (tile.isMine()) throw new BombException(p);
 
         if (tile.getAdjacentMines() == 0) revealAdjacentTiles(p);
 
-        if (checkWin()) {
-            throw new VictoryException();
-        }
-
+        checkWin();
+        if (isWin) throw new VictoryException();
     }
 
     private void revealAdjacentTiles(Point p) {
@@ -145,10 +132,6 @@ public class GameService {
     private void revealTile(Tile tile) {
         tile.reveal();
         revealedTiles++;
-    }
-
-    public boolean isGameOver() {
-        return isGameOver;
     }
 
     public boolean isWin() {

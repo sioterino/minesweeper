@@ -2,12 +2,14 @@ package org.sioterino.minesweeper.controllers;
 
 import org.sioterino.minesweeper.App;
 import org.sioterino.minesweeper.models.Board.Point;
+import org.sioterino.minesweeper.models.Player;
 import org.sioterino.minesweeper.models.Tile;
 import org.sioterino.minesweeper.services.GameService;
 import org.sioterino.minesweeper.utils.*;
 import org.sioterino.minesweeper.utils.enums.*;
 import org.sioterino.minesweeper.utils.exceptions.InvalidInputException;
 import org.sioterino.minesweeper.utils.exceptions.game.BombException;
+import org.sioterino.minesweeper.utils.exceptions.game.HintAlreadyGivenException;
 import org.sioterino.minesweeper.utils.exceptions.game.VictoryException;
 
 import java.util.Map;
@@ -55,12 +57,17 @@ public class GameController extends Controller {
     }
 
     private boolean giveHint(String input) {
-        if (input.contains("hint")) {
+        if (!input.contains("hint")) return false;
+
+        try {
             gameService.hint();
             printInGame();
-            return true;
+
+        } catch (HintAlreadyGivenException e) {
+            System.err.println(e.getMessage());
         }
-        return false;
+
+        return true;
     }
 
     private boolean commandInput(String input) {
@@ -79,12 +86,14 @@ public class GameController extends Controller {
     }
 
     private void gameMoveInput(String input) {
+        if (input.contains("hint")) return;
+
         try {
-            String[] commands = InputHandler.gameInput(input);
-            Point p = Point.parse(commands[0], commands[1]);
+            String[] movement = InputHandler.gameInput(input);
+            Point p = Point.parse(movement[0], movement[1]);
             history.push(p);
 
-            if (commands.length == 2) {
+            if (movement.length == 2) {
                 gameService.reveal(p);
             } else {
                 gameService.toggleFlag(p);
@@ -94,9 +103,11 @@ public class GameController extends Controller {
 
         } catch (VictoryException ignored) {
             printYouWon();
+            updatePlayerStats();
 
         } catch (BombException ignored) {
             printYouLost();
+            updatePlayerStats();
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -120,6 +131,14 @@ public class GameController extends Controller {
 
     private void seeRules() {
         new RulesController(scanner, GameRulesReturnPage.IN_GAME, this).start();
+    }
+
+    private void updatePlayerStats() {
+        if (gameService.isWin()) {
+            App.player.increaseWins();
+        } else {
+            App.player.increaseLosses();
+        }
     }
 
     private void printBoard(boolean revealAll) {
