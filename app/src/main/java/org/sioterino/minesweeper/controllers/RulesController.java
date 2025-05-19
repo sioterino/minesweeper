@@ -11,19 +11,19 @@ public class RulesController extends Controller {
 
     private final Scanner scanner;
     private final GameRulesReturnPage page;
-    private final Difficulty gamemode;
+    private final GameController gameController;
 
     public RulesController(Scanner scanner, GameRulesReturnPage page) {
         this.scanner = scanner;
         this.page = page;
-        this.gamemode = null;
+        this.gameController = null;
         Terminal.redirect(ASCIIMenu.RULES, Difficulty.BEGINNER, Difficulty.INTERMEDIATE, Difficulty.EXPERT);
     }
 
-    public RulesController(Scanner scanner, GameRulesReturnPage page, Difficulty gamemode) {
+    public RulesController(Scanner scanner, GameRulesReturnPage page, GameController gameController) {
         this.scanner = scanner;
         this.page = page;
-        this.gamemode = gamemode;
+        this.gameController = gameController;
         Terminal.redirect(ASCIIMenu.RULES, Difficulty.BEGINNER, Difficulty.INTERMEDIATE, Difficulty.EXPERT);
     }
 
@@ -42,7 +42,10 @@ public class RulesController extends Controller {
         switch (page) {
             case MAIN_MENU -> mainMenu(scanner);
             case SETTINGS -> new SettingsController(scanner).start();
-            case IN_GAME ->  new GameController(scanner, gamemode).start();
+            case IN_GAME -> {
+                gameController.printInGame();
+                gameController.start();
+            }
         }
     }
 

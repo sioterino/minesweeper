@@ -119,7 +119,7 @@ public class GameController extends Controller {
     }
 
     private void seeRules() {
-        new RulesController(scanner, GameRulesReturnPage.IN_GAME, gamemode).start();
+        new RulesController(scanner, GameRulesReturnPage.IN_GAME, this).start();
     }
 
     private void printBoard(boolean revealAll) {
@@ -156,7 +156,7 @@ public class GameController extends Controller {
         System.out.printf(ASCIIMenu.EXPLODED_BOMB_SETTINGS.toString(), history.peek().toString());
     }
 
-    private void printInGame() {
+    protected void printInGame() {
         Terminal.clearConsole();
         System.out.println(ASCIIMenu.MINESWEEPER);
         printBoard(false);
