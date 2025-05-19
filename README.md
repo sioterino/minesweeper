@@ -16,7 +16,7 @@ This project is a command-line version of the classic Minesweeper game, built in
 
 >[!TIP]
 > You can also download the `.zip` file in [this link](https://github.com/sioterino/minesweeper/archive/refs/heads/main.zip).
-> Just down forget to run the corresponding runnable script (`run.sh` or `run.bat`) file inside the exported `minesweeper-main/` directory.
+> Just don't forget to run the corresponding script (`run.sh` or `run.bat`) file inside the exported `minesweeper-main/` directory.
 
 ### On Windows Terminal
 ```bash
@@ -31,11 +31,11 @@ This project is a command-line version of the classic Minesweeper game, built in
 > [!WARNING]
 > Be aware there might be problems related to file permissions.
 
->[!IMPORTANT]
-> Heavy inspiration from [this project](https://github.com/jesse-rr/CLI_Blackjack) and [this project](https://github.com/Squirrelbear/Minesweeper/)
-
 ## Contributing
 I welcome contributions! Feel free to submit issues or pull requests.
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
+<br></br><br></br>
+>[!IMPORTANT]
+> Heavy inspiration from this [CLI game project](https://github.com/jesse-rr/CLI_Blackjack) and this [Minesweeper project](https://github.com/Squirrelbear/Minesweeper/).
