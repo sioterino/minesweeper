@@ -13,7 +13,6 @@ public class GameService {
     private boolean isWin;
 
     private int revealedTiles;
-    private int correctlyFlaggedTiles;
     private int flaggedTiles;
 
     public GameService(int rows, int cols, int mines) {
@@ -23,7 +22,6 @@ public class GameService {
         this.isWin = false;
 
         this.revealedTiles = 0;
-        this.correctlyFlaggedTiles = 0;
         this.flaggedTiles = 0;
     }
 
@@ -31,7 +29,7 @@ public class GameService {
         int boardSize = board.getHeight() * board.getWidth();
         int mines = board.getMines();
 
-        if (revealedTiles == boardSize - mines || mines == correctlyFlaggedTiles) {
+        if (revealedTiles == boardSize - mines) {
             isWin = true;
             isGameOver = true;
 
@@ -45,17 +43,17 @@ public class GameService {
 
         if (!board.isInside(p)) {
             throw new PointCoordinateOutsideBoardException(p);
-        };
+        }
 
         Tile tile = board.getTile(p);
 
         if (tile.isRevealed()) {
             throw new TileAlreadyRevealedException(p);
-        };
+        }
 
         if (tile.isFlagged()) {
             throw new TileIsFlaggedException(p);
-        };
+        }
 
         revealTile(tile);
 
@@ -69,28 +67,34 @@ public class GameService {
 
         if (checkWin()) {
             throw new VictoryException();
-        };
+        }
 
     }
 
     private void revealAdjacentTiles(Point p) {
 
-        for (int row = p.y - 1; row <= p.y + 1; row++) {
-            for (int col = p.x - 1; col <= p.x + 1; col++) {
+        Tile tile = board.getTile(p);
+        if (tile.getAdjacentMines() == 0) {
 
-                if (board.isInside(row, col)) {
+            Point[][] points = board.surroundingPoints(p);
 
-                    Tile neighbor = board.getTile(row, col);
+            for (Point[] neighbors : points) {
+                for (Point point : neighbors) {
 
-                    if (!neighbor.isRevealed() && !neighbor.isMine()) {
+                    if (point == null) continue;
+
+                    Tile neighbor = board.getTile(point);
+                    if (!neighbor.isRevealed() && !neighbor.isFlagged()) {
                         revealTile(neighbor);
-                        if (neighbor.getAdjacentMines() == 0) revealAdjacentTiles(new Point(col, row));
+
+                        if (neighbor.getAdjacentMines() == 0)
+                            revealAdjacentTiles(point);
                     }
+
                 }
-
             }
-        }
 
+        }
     }
 
     private void revealTile(Tile tile) {
@@ -103,21 +107,13 @@ public class GameService {
             Tile tile = board.getTile(p);
             if (!tile.isRevealed()) {
 
-                if (tile.isMine()) {
-                    if (tile.isFlagged()) {
-                        correctlyFlaggedTiles--;
-                    } else {
-                        correctlyFlaggedTiles++;
-                    }
-                }
-
                 if (tile.isFlagged()) {
                     flaggedTiles--;
                 } else {
                     flaggedTiles++;
                 }
-
                 tile.toggleFlag();
+
             } else {
                 throw new TileAlreadyRevealedException(p);
             }

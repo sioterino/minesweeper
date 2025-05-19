@@ -2,13 +2,6 @@ package org.sioterino.minesweeper.models;
 
 public class Board {
 
-    /*
-    *   im quite stupid so I'll just let this be here
-    *
-    *          ROWS = HEIGHT
-    *       COLUMNS = WIDTH
-    */
-
     private final int width;
     private final int height;
     private final int mines;
@@ -21,7 +14,6 @@ public class Board {
         this.width = cols;
 
         this.mines = mines;
-//        this.grid = new Tile[rows][col];
         this.grid = new Tile[height][width];
 
         loadBoard();
@@ -30,7 +22,7 @@ public class Board {
     private void loadBoard() {
         createTiles();
         placeMines();
-        setAdjacentMines();
+        countAdjacentMines();
     }
 
     private void createTiles() {
@@ -57,47 +49,55 @@ public class Board {
         }
     }
 
-    private void setAdjacentMines() {
+    private void countAdjacentMines() {
+
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
+
                 Tile tile = grid[row][col];
-                if (!tile.isMine()) {
-                    countAdjacentMines(tile, row, col);
-                }
-            }
-        }
-    }
+                if (tile.isMine()) {
 
-    private void countAdjacentMines(Tile tile, int row, int col) {
-        for (int y = row - 1; y <= row + 1; y++) {
-            for (int x = col - 1; x <= col + 1; x++) {
+                    Point[][] points = surroundingPoints(col, row);
+                    for (Point[] neighbors : points) {
+                        for (Point point : neighbors) {
 
-                if (isInside(x, y)) {
-                    Tile neighbor = getTile(x, y);
-                    /*
-                    *   rather than using method equals() to compare weather the
-                    *   content of two objects are the same—in this case, they
-                    *   might have the same value inside, but they're still two
-                    *   different tiles being places on different coordinates inside
-                    *   the board—we should check if both variables (tile, neighbor)
-                    *   are the same object reference
-                    */
-                    if (tile != neighbor && neighbor.isMine())
-                        tile.increaseAdjacentMines();
+                            if (point == null) continue;
+                            getTile(point).increaseAdjacentMines();
+
+                        }
+                    }
+
                 }
 
             }
         }
     }
 
-    public boolean isInside(int x, int y) {
+    public Point[][] surroundingPoints(int x, int y) {
+        return surroundingPoints(new Point(x, y));
+    }
 
-        boolean isXPositive = x >= 0;
-        boolean isXWithinWidth = x < width;
-        boolean isYPositive = y >= 0;
-        boolean isYWithinWidth = y < height;
+    public Point[][] surroundingPoints(Point p) {
 
-        return isXPositive && isXWithinWidth && isYPositive && isYWithinWidth;
+        Point[][] points = new Point[3][3];
+
+        for (int dy = 1; dy >= -1; dy--) {
+            for (int dx = -1; dx <= 1; dx++) {
+
+                int row = 1 - dy;
+                int col = dx + 1;
+
+                if (dx == 0 && dy == 0) {
+                    points[row][col] = null;
+                    continue;
+                }
+
+                Point neighbor = new Point(p.x + dx, p.y + dy);
+                points[row][col] = isInside(neighbor) ? neighbor : null;
+
+            }
+        }
+        return points;
     }
 
     public boolean isInside(Point p) {
