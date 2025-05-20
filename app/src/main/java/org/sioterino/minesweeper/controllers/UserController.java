@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class UserController extends Controller {
 
     private final Scanner scanner;
-    public final UserService service = new UserService(new FileUserRepository(), new BCryptHashAlgorithm());
+    protected final UserService service = new UserService(new FileUserRepository(), new BCryptHashAlgorithm());
 
     public UserController(Scanner scanner) {
         this.scanner = scanner;

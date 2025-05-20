@@ -2,10 +2,10 @@ package org.sioterino.minesweeper.models;
 
 public class User {
 
-    private String login;
+    private final String login;
     private String password;
 
-    boolean isGuest;
+    private final boolean isGuest;
 
     private int wins;
     private int losses;
@@ -36,10 +36,6 @@ public class User {
 
     public boolean isGuest() {
         return isGuest;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public void setPassword(String password) {

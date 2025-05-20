@@ -24,7 +24,7 @@ public class MenuController extends Controller {
             case 'q' -> safeExit(scanner, App.userController.service);
             case 's' -> startGame();
             case 'a' -> seeAccount();
-            case 'h' -> gameRules();
+            case 'h' -> seeGameRules(scanner, GameRulesReturnPage.MAIN_MENU);
             default -> safeWarn(choice);
         }
 
@@ -36,10 +36,6 @@ public class MenuController extends Controller {
 
     private void seeAccount() {
         new AccountController(scanner).start();
-    }
-
-    private void gameRules() {
-        new RulesController(scanner, GameRulesReturnPage.MAIN_MENU).start();
     }
 
 }

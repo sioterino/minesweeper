@@ -26,7 +26,7 @@ public class SettingsController extends Controller {
             case 'b' -> beginner();
             case 'i' -> intermediate();
             case 'e' -> expert();
-            case 'h' -> gameRules();
+            case 'h' -> seeGameRules(scanner, GameRulesReturnPage.SETTINGS);
             default -> safeWarn(choice);
         }
     }
@@ -41,10 +41,6 @@ public class SettingsController extends Controller {
 
     private void expert() {
         new GameController(scanner, Difficulty.EXPERT).start();
-    }
-
-    private void gameRules() {
-        new RulesController(scanner, GameRulesReturnPage.SETTINGS).start();
     }
 
 }

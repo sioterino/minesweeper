@@ -4,6 +4,7 @@ import org.sioterino.minesweeper.App;
 import org.sioterino.minesweeper.services.UserService;
 import org.sioterino.minesweeper.utils.InputHandler;
 import org.sioterino.minesweeper.utils.enums.ConsoleColor;
+import org.sioterino.minesweeper.utils.enums.GameRulesReturnPage;
 import org.sioterino.minesweeper.utils.exceptions.InvalidInputException;
 
 import java.io.Console;
@@ -19,6 +20,14 @@ public abstract class Controller {
 
     protected void mainMenu(Scanner scanner) {
         new MenuController(scanner).start();
+    }
+
+    protected void seeGameRules(Scanner scanner, GameRulesReturnPage page) {
+        new RulesController(scanner, page).start();
+    }
+
+    protected void seeGameRules(Scanner scanner, GameController gameController) {
+        new RulesController(scanner, GameRulesReturnPage.IN_GAME, gameController).start();
     }
 
     protected void safeWarn(char input) {

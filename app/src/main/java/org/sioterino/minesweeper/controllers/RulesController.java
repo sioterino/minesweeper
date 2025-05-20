@@ -38,12 +38,12 @@ public class RulesController extends Controller {
         }
     }
 
-    public void returnToPreviousPage() {
+    private void returnToPreviousPage() {
         switch (page) {
             case MAIN_MENU -> mainMenu(scanner);
             case SETTINGS -> new SettingsController(scanner).start();
             case IN_GAME -> {
-                gameController.printInGame();
+                gameController.boardController.printInGame();
                 gameController.start();
             }
         }
